@@ -1,5 +1,9 @@
-const page = () => {
-  return <div>page</div>
-}
+import { ModeToggle } from '@/components/ModeToggle'
 
-export default page
+export default function Landing() {
+  return (
+    <>
+      <h1>APP PRINCIPAL</h1>
+    </>
+  )
+}
