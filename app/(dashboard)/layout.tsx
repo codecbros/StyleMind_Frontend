@@ -1,16 +1,12 @@
-import { AppSidebar } from '@/components/AppSidebar'
-import { ModeToggle } from '@/components/ModeToggle'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { AppSidebar } from '@/components/AppSidebar'
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className='flex flex-1 flex-col gap-4 p-4'>
-        <div className='flex justify-between'>
-          <SidebarTrigger />
-          <ModeToggle />
-        </div>
+      <main className='flex flex-1 flex-col gap-2 md:gap-4 p-5'>
+        <SidebarTrigger />
         {children}
       </main>
     </SidebarProvider>

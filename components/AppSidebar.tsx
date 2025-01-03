@@ -1,57 +1,76 @@
 'use client'
-
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { User, Shirt, Palette, PlusCircle, BarChart2 } from 'lucide-react'
+import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react'
 import {
   Sidebar,
-  SidebarHeader,
   SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton
+  SidebarMenuButton,
+  SidebarMenuItem
 } from '@/components/ui/sidebar'
+import { useIsMobile } from '@/hooks/use-mobile'
+import { ModeToggle } from './ModeToggle'
 
-const sidebarItems = [
-  { name: 'Perfil', href: '/perfil', icon: User },
-  { name: 'Combinaciones', href: '/combinaciones', icon: Palette },
-  { name: 'Nueva Combinación', href: '/nueva-combinacion', icon: PlusCircle },
-  { name: 'Armario', href: '/armario', icon: Shirt },
-  { name: 'Crear Prenda', href: '/crear-prenda', icon: Shirt },
-  { name: 'Estadísticas', href: '/estadisticas', icon: BarChart2 }
+// Menu items.
+const items = [
+  {
+    title: 'Home',
+    url: '#',
+    icon: Home
+  },
+  {
+    title: 'Inbox',
+    url: '#',
+    icon: Inbox
+  },
+  {
+    title: 'Calendar',
+    url: '#',
+    icon: Calendar
+  },
+  {
+    title: 'Search',
+    url: '#',
+    icon: Search
+  },
+  {
+    title: 'Settings',
+    url: '#',
+    icon: Settings
+  }
 ]
 
 export function AppSidebar() {
-  const pathname = usePathname()
+  const isMobile = useIsMobile()
 
   return (
-    <Sidebar className='border-r'>
-      <SidebarHeader className='border-b px-6 py-4'>
-        <h2 className='text-lg font-semibold tracking-tight'>Fashion Dashboard</h2>
-      </SidebarHeader>
+    <Sidebar collapsible='icon' side={isMobile ? 'right' : 'left'}>
       <SidebarContent>
-        <ScrollArea className='h-[calc(100vh-5rem)]'>
-          <SidebarMenu>
-            {sidebarItems.map(item => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname === item.href}
-                  className='w-full justify-start'
-                >
-                  <Link href={item.href} className='flex items-center'>
-                    <item.icon className='mr-2 h-4 w-4' />
-                    {item.name}
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </ScrollArea>
+        <SidebarGroup>
+          <SidebarGroupLabel>StyleMind</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map(item => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarGroupLabel>Configuraciones</SidebarGroupLabel>
+        <ModeToggle />
+      </SidebarFooter>
     </Sidebar>
   )
 }
