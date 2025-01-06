@@ -1,7 +1,7 @@
 export default function register() {
   return (
     <>
-      <section className='col-span-3 mx-auto '>
+      <section className='col-span-3 mx-auto hidden lg:block '>
         <img
           src='https://plus.unsplash.com/premium_vector-1724163333366-dc150b75f069'
           alt=''
