@@ -29,9 +29,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                   <MainNav />
                   <ModeToggle />
                 </header>
-                <main className='container mx-auto px-2'>{children}</main>
               </>
             )}
+            <main className={`${showMainNav ? 'container mx-auto' : ''} px-2`}>{children}</main>
           </ThemeProvider>
         </body>
       </html>

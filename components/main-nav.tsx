@@ -12,7 +12,10 @@ export default function MainNav() {
         <Link href='/' className='text-sm font-medium transition-colors hover:text-primary'>
           Inicio
         </Link>
-        <Link href='/register' className='text-sm font-medium transition-colors hover:text-primary'>
+        <Link
+          href='/auth/registro'
+          className='text-sm font-medium transition-colors hover:text-primary'
+        >
           Registro
         </Link>
         <Link href='/login' className='text-sm font-medium transition-colors hover:text-primary'>
