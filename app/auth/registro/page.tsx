@@ -1,4 +1,4 @@
-import FormRegister from '@/components/FormRegister'
+import FormRegister from '@/components/forms/auth/FormRegister'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function register() {

@@ -5,6 +5,7 @@ import { playfair_display, raleway, roboto } from './fonts'
 import MainNav from '@/components/main-nav'
 import { ModeToggle } from '@/components/ModeToggle'
 import { usePathname } from 'next/navigation'
+import { Toaster } from '@/components/ui/toaster'
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const pathname = usePathname()
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               </>
             )}
             <main className={`${showMainNav ? 'container mx-auto' : ''} px-4`}>{children}</main>
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>

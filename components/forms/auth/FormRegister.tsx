@@ -1,5 +1,4 @@
 'use client'
-import { z } from 'zod'
 import {
   Form,
   FormControl,
@@ -13,37 +12,40 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-
-const formSchema = z.object({
-  firstname: z.string().min(2, {
-    message: 'El nombre de usuario debe tener al menos 2 caracteres.'
-  }),
-  lastname: z.string().min(2, {
-    message: 'El nombre de usuario debe tener al menos 2 caracteres.'
-  }),
-  email: z.string().email({
-    message: 'Por favor, introduce un email válido.'
-  }),
-  password: z.string().min(8, {
-    message: 'La contraseña debe tener al menos 8 caracteres.'
-  })
-})
-
-type FormRegisterType = z.infer<typeof formSchema>
+import { FormRegisterType } from '@/types/Register'
+import { formSchema } from '@/schema/auth/registerSchema'
+import { registerUser } from '@/services/auth/register'
+import { useToast } from '@/hooks/use-toast'
 
 export default function FormRegister() {
+  const { toast } = useToast()
   const form = useForm<FormRegisterType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstname: '',
-      lastname: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: ''
     }
   })
 
-  function onSubmit(values: FormRegisterType) {
-    console.log(values)
+  async function onSubmit(data: FormRegisterType) {
+    try {
+      const response = await registerUser(data)
+      toast({
+        title: '¡Registro exitoso!',
+        description: response.message,
+        className: 'uppercase'
+      })
+      // Aquí puedes agregar redirección o cualquier otra lógica post-registro
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive',
+        className: 'uppercase'
+      })
+    }
   }
 
   return (
@@ -51,7 +53,7 @@ export default function FormRegister() {
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-7'>
         <FormField
           control={form.control}
-          name='firstname'
+          name='firstName'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nombres</FormLabel>
@@ -64,7 +66,7 @@ export default function FormRegister() {
         />
         <FormField
           control={form.control}
-          name='lastname'
+          name='lastName'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Apellidos</FormLabel>
