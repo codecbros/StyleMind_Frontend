@@ -9,6 +9,7 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,6 +20,7 @@ import { useToast } from '@/hooks/use-toast'
 
 export default function FormRegister() {
   const { toast } = useToast()
+  const router = useRouter()
   const form = useForm<FormRegisterType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,7 +39,8 @@ export default function FormRegister() {
         description: response.message,
         className: 'uppercase'
       })
-      // Aquí puedes agregar redirección o cualquier otra lógica post-registro
+      form.reset()
+      router.push('/')
     } catch (error: any) {
       toast({
         title: 'Error',
