@@ -25,13 +25,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           >
             {showMainNav && (
               <>
-                <header className='container mx-auto flex items-center justify-between py-4 px-2'>
+                <header className='container mx-auto flex items-center justify-between p-4'>
                   <MainNav />
                   <ModeToggle />
                 </header>
               </>
             )}
-            <main className={`${showMainNav ? 'container mx-auto' : ''} px-2`}>{children}</main>
+            <main className={`${showMainNav ? 'container mx-auto' : ''} px-4`}>{children}</main>
           </ThemeProvider>
         </body>
       </html>
