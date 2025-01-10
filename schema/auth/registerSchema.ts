@@ -1,6 +1,7 @@
 import { z } from 'zod'
+export const GENDER_OPTIONS = ['Hombre', 'Mujer', 'Prefiero no decirlo'] as const
 
-export const formSchema = z.object({
+export const formRegisterSchema = z.object({
   firstName: z
     .string()
     .min(2, {
@@ -43,5 +44,10 @@ export const formSchema = z.object({
     })
     .regex(/[@$!%*?&]/, {
       message: 'La contraseña debe incluir al menos un símbolo especial (@, $, !, %, *, ?, &).'
-    })
+    }),
+  gender: z.enum(GENDER_OPTIONS, {
+    errorMap: () => {
+      return { message: 'Por favor, selecciona una opción.' }
+    }
+  })
 })

@@ -13,7 +13,7 @@ export default function MainNav() {
           Inicio
         </Link>
         <Link
-          href='/auth/registro'
+          href='/auth/register'
           className='text-sm font-medium transition-colors hover:text-primary'
         >
           Registro

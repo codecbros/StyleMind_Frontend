@@ -9,7 +9,7 @@ import { Toaster } from '@/components/ui/toaster'
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const pathname = usePathname()
-  const showMainNav = ['/', '/auth/login', '/auth/registro'].includes(pathname)
+  const showMainNav = ['/', '/auth/login', '/auth/register'].includes(pathname)
 
   return (
     <>

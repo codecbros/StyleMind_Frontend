@@ -14,20 +14,29 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { FormRegisterType } from '@/types/Register'
-import { formSchema } from '@/schema/auth/registerSchema'
+
 import { registerUser } from '@/services/auth/register'
 import { useToast } from '@/hooks/use-toast'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
+import { formRegisterSchema, GENDER_OPTIONS } from '@/schema/auth/registerSchema'
 
 export default function FormRegister() {
   const { toast } = useToast()
   const router = useRouter()
   const form = useForm<FormRegisterType>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formRegisterSchema),
     defaultValues: {
       firstName: '',
       lastName: '',
       email: '',
-      password: ''
+      password: '',
+      gender: undefined
     }
   })
 
@@ -54,6 +63,31 @@ export default function FormRegister() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-7'>
+        <FormField
+          control={form.control}
+          name='gender'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Genero</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Selecciona tu género' />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {GENDER_OPTIONS.map(gender => (
+                    <SelectItem key={gender} value={gender}>
+                      {gender}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name='firstName'
