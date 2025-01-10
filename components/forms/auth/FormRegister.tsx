@@ -8,15 +8,8 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { FormRegisterType } from '@/types/Register'
-
-import { registerUser } from '@/services/auth/register'
-import { useToast } from '@/hooks/use-toast'
 import {
   Select,
   SelectContent,
@@ -24,41 +17,11 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { formRegisterSchema, GENDER_OPTIONS } from '@/schema/auth/registerSchema'
+import { GENDER_OPTIONS } from '@/schema/auth/registerSchema'
+import { useRegisterForm } from '@/hooks/useRegisterForm'
 
 export default function FormRegister() {
-  const { toast } = useToast()
-  const router = useRouter()
-  const form = useForm<FormRegisterType>({
-    resolver: zodResolver(formRegisterSchema),
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      gender: undefined
-    }
-  })
-
-  async function onSubmit(data: FormRegisterType) {
-    try {
-      const response = await registerUser(data)
-      toast({
-        title: '¡Registro exitoso!',
-        description: response.message,
-        className: 'uppercase'
-      })
-      form.reset()
-      router.push('/')
-    } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.message,
-        variant: 'destructive',
-        className: 'uppercase'
-      })
-    }
-  }
+  const { form, onSubmit } = useRegisterForm()
 
   return (
     <Form {...form}>
