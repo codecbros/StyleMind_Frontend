@@ -5,8 +5,10 @@ import { formRegisterSchema } from '@/schema/auth/registerSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { registerUser } from '@/services/auth/register'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export function useRegisterForm() {
+  const [isLoading, setIsLoading] = useState(false) // Estado para el loading
   const { toast } = useToast()
   const router = useRouter()
   const form = useForm<FormRegisterType>({
@@ -15,11 +17,13 @@ export function useRegisterForm() {
       firstName: '',
       lastName: '',
       email: '',
-      password: ''
+      password: '',
+      genderId: ''
     }
   })
 
   async function onSubmit(data: FormRegisterType) {
+    setIsLoading(true)
     try {
       const response = await registerUser(data)
       toast({
@@ -36,8 +40,10 @@ export function useRegisterForm() {
         variant: 'destructive',
         className: 'uppercase'
       })
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  return { form, onSubmit }
+  return { form, onSubmit, isLoading }
 }

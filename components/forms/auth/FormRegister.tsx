@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { LoaderCircle } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -21,14 +22,14 @@ import { GENDER_OPTIONS } from '@/schema/auth/registerSchema'
 import { useRegisterForm } from '@/hooks/useRegisterForm'
 
 export default function FormRegister() {
-  const { form, onSubmit } = useRegisterForm()
+  const { form, onSubmit, isLoading } = useRegisterForm()
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-7'>
         <FormField
           control={form.control}
-          name='gender'
+          name='genderId'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Genero</FormLabel>
@@ -40,8 +41,8 @@ export default function FormRegister() {
                 </FormControl>
                 <SelectContent>
                   {GENDER_OPTIONS.map(gender => (
-                    <SelectItem key={gender} value={gender}>
-                      {gender}
+                    <SelectItem key={gender.genderId} value={gender.genderId}>
+                      {gender.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -50,7 +51,6 @@ export default function FormRegister() {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name='firstName'
@@ -104,8 +104,15 @@ export default function FormRegister() {
             </FormItem>
           )}
         />
-        <Button className='font-semibold' type='submit'>
-          Guardar
+        <Button
+          className='font-semibold flex items-center gap-2'
+          type='submit'
+          disabled={isLoading}
+        >
+          {isLoading && (
+            <LoaderCircle className='animate-spin w-4 h-4' /> // Ícono con animación
+          )}
+          {isLoading ? 'Procesando...' : 'Guardar'}
         </Button>
       </form>
     </Form>
