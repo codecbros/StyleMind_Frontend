@@ -32,10 +32,10 @@ export default function FormRegister() {
           name='genderId'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Genero</FormLabel>
+              <FormLabel>Género</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className='hover:border-primary/50 focus:ring-primary/20 border border-muted-foreground'>
                     <SelectValue placeholder='Selecciona tu género' />
                   </SelectTrigger>
                 </FormControl>
@@ -58,7 +58,12 @@ export default function FormRegister() {
             <FormItem>
               <FormLabel>Nombres</FormLabel>
               <FormControl>
-                <Input type='text' placeholder='Pepito Pepon' {...field} />
+                <Input
+                  type='text'
+                  placeholder='Ej: María'
+                  className='hover:border-primary/50 focus:ring-primary/20  border border-muted-foreground'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -71,7 +76,12 @@ export default function FormRegister() {
             <FormItem>
               <FormLabel>Apellidos</FormLabel>
               <FormControl>
-                <Input type='text' placeholder='Perrone Perreo' {...field} />
+                <Input
+                  type='text'
+                  placeholder='Ej: García López'
+                  className='hover:border-primary/50 focus:ring-primary/20  border border-muted-foreground'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -84,7 +94,12 @@ export default function FormRegister() {
             <FormItem>
               <FormLabel>Correo Electronico</FormLabel>
               <FormControl>
-                <Input type='email' placeholder='correo@correo.com' {...field} />
+                <Input
+                  type='email'
+                  placeholder='tu@email.com'
+                  className='hover:border-primary/50 focus:ring-primary/20  border border-muted-foreground'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -97,9 +112,16 @@ export default function FormRegister() {
             <FormItem>
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
-                <Input type='password' {...field} />
+                <Input
+                  type='password'
+                  className='hover:border-primary/50 focus:ring-primary/20  border border-muted-foreground'
+                  {...field}
+                />
               </FormControl>
-              <FormDescription>Recuerda poner una contraseña segura</FormDescription>
+              <FormDescription>
+                {' '}
+                Usa al menos 6 caracteres, incluyendo números y símbolos
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -109,10 +131,8 @@ export default function FormRegister() {
           type='submit'
           disabled={isLoading}
         >
-          {isLoading && (
-            <LoaderCircle className='animate-spin w-4 h-4' /> // Ícono con animación
-          )}
-          {isLoading ? 'Procesando...' : 'Guardar'}
+          {isLoading && <LoaderCircle className='animate-spin w-4 h-4' />}
+          {isLoading ? 'Creando tu cuenta...' : 'Únete a la comunidad'}
         </Button>
       </form>
     </Form>

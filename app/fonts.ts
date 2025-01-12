@@ -14,7 +14,7 @@ export const raleway = Raleway({
 })
 export const playfair_display = Playfair_Display({
   subsets: ['latin'],
-  weight: ['400', '700', '900'],
+  weight: ['400', '700', '800', '900'],
   variable: '--font-playfair',
   style: 'normal'
 })
