@@ -1,4 +1,4 @@
-import { GenderOption } from '@/types/types'
+import { GenderOption } from '@/types'
 import { z } from 'zod'
 
 export const GENDER_OPTIONS: GenderOption[] = [

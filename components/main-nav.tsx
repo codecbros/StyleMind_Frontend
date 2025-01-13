@@ -18,7 +18,10 @@ export default function MainNav() {
         >
           Registro
         </Link>
-        <Link href='/login' className='text-sm font-medium transition-colors hover:text-primary'>
+        <Link
+          href='/auth/login'
+          className='text-sm font-medium transition-colors hover:text-primary'
+        >
           Login
         </Link>
       </nav>

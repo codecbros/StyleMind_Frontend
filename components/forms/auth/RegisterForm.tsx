@@ -21,7 +21,7 @@ import {
 import { GENDER_OPTIONS } from '@/schema/auth/registerSchema'
 import { useRegisterForm } from '@/hooks/useRegisterForm'
 
-export default function FormRegister() {
+export default function RegisterForm() {
   const { form, onSubmit, isLoading } = useRegisterForm()
 
   return (
