@@ -16,7 +16,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <html lang='es' suppressHydrationWarning>
         <head />
         <body
-          className={`${playfair_display.variable} ${roboto.variable} ${raleway.variable} antialiased scroll-smooth`}
+          className={`${playfair_display.variable} ${roboto.variable} ${raleway.variable} antialiased scroll-smooth bg-[#F0F5F9] dark:bg-black/50 `}
         >
           <ThemeProvider
             attribute='class'

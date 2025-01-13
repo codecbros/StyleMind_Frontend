@@ -1,13 +1,22 @@
 import { playfair_display } from '@/app/fonts'
-import LoginForm from '@/components/forms/auth/LoginFrom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import LoginForm from '@/components/forms/auth/LoginFrom'
 import Image from 'next/image'
 
 export default function login() {
   return (
     <>
+      <section className='lg:col-span-1 2xl:col-span-3 mx-auto hidden lg:block '>
+        <Image
+          src='/RegisterImg.jpg'
+          alt=''
+          width={6000}
+          height={4000}
+          className='object-cover transition-all duration-300 rounded-lg hover:grayscale opacity-90 dark:opacity-75'
+        />
+      </section>
       <section className='mx-auto w-full lg:col-span-1 2xl:col-span-2'>
-        <Card className='border border-muted-foreground'>
+        <Card className='border border-muted-foreground shadow-xl'>
           <CardHeader>
             <CardTitle
               className={`${playfair_display.className} font-extrabold text-center leading-7 md:text-start uppercase`}
@@ -27,15 +36,6 @@ export default function login() {
             <LoginForm />
           </CardContent>
         </Card>
-      </section>
-      <section className='lg:col-span-1 2xl:col-span-3 mx-auto hidden lg:block '>
-        <Image
-          src='/RegisterImg.jpg'
-          alt=''
-          width={6000}
-          height={4000}
-          className='object-cover transition-all duration-300 rounded-lg hover:grayscale opacity-90 dark:opacity-75 h-outlet'
-        />
       </section>
     </>
   )
