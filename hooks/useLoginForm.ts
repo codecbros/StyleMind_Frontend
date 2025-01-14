@@ -20,7 +20,6 @@ export function useLoginForm() {
   })
 
   async function onSubmit(data: FormLoginType) {
-    console.log(data)
     setIsLoading(true)
     try {
       const response = await authService.login(data)

@@ -11,8 +11,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '@/components/ui/sidebar'
-import { useIsMobile } from '@/hooks/use-mobile'
 import { ModeToggle } from './ModeToggle'
+import { useIsMobile } from '@/hooks/use-mobile'
 
 // Menu items.
 const items = [

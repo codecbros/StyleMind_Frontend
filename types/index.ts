@@ -6,7 +6,7 @@ type Auth = z.infer<typeof formRegisterSchema>
 export type FormLoginType = Pick<Auth, 'email' | 'password'>
 export type FormRegisterType = z.infer<typeof formRegisterSchema>
 
-export type GenderOption = {
-  genderId: string
+export type Gender = {
+  id: string
   name: string
 }

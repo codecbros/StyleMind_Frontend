@@ -10,9 +10,10 @@ export default function register() {
       <section className='lg:col-span-1 2xl:col-span-3 mx-auto hidden lg:block '>
         <Image
           src='/RegisterImg.jpg'
-          alt=''
-          width={6000}
-          height={4000}
+          alt='Imagen de fondo para el registro'
+          width={3000}
+          height={2000}
+          priority={true}
           className='object-cover transition-all duration-300 rounded-lg hover:grayscale opacity-90 dark:opacity-75'
         />
       </section>

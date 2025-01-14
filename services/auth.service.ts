@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { axiosInstance } from './config'
-import { FormLoginType, FormRegisterType } from '@/types'
+import { FormLoginType, FormRegisterType, Gender } from '@/types'
 
 // Para registro (envía por body)
 async function registerRequest(endpoint: string, data: FormRegisterType) {
@@ -38,8 +38,20 @@ async function loginRequest(endpoint: string, credentials: FormLoginType) {
   }
 }
 
+async function getGendersRequest(endpoint: string): Promise<Gender[]> {
+  try {
+    const { data } = await axiosInstance.get(endpoint)
+    return data.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Error al obtener géneros.')
+    }
+    throw error
+  }
+}
+
 export const authService = {
   register: (data: FormRegisterType) => registerRequest('/users', data),
-
-  login: (credentials: FormLoginType) => loginRequest('/auth/login', credentials)
+  login: (credentials: FormLoginType) => loginRequest('/auth/login', credentials),
+  getGenders: () => getGendersRequest('/genders')
 }

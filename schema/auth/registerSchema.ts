@@ -1,11 +1,4 @@
-import { GenderOption } from '@/types'
 import { z } from 'zod'
-
-export const GENDER_OPTIONS: GenderOption[] = [
-  { genderId: 'cm5q67ghi0001cu21w3bn7mhs', name: 'Hombre' },
-  { genderId: 'cm5q68hft0004cu218yqqky5o', name: 'Mujer' },
-  { genderId: 'cm5q69y4j0003cu21kn4qhmoy', name: 'Prefiero no decirlo' }
-]
 
 export const formRegisterSchema = z.object({
   firstName: z
@@ -51,7 +44,9 @@ export const formRegisterSchema = z.object({
     .regex(/[@$!%*?&]/, {
       message: 'La contraseña debe incluir al menos un símbolo especial (@, $, !, %, *, ?, &).'
     }),
-  genderId: z.string().refine(value => GENDER_OPTIONS.some(option => option.genderId === value), {
-    message: 'Por favor, selecciona una opción válida.'
-  })
+  genderId: z
+    .string({
+      message: 'El género es requerido'
+    })
+    .min(1, 'Por favor, selecciona un género')
 })

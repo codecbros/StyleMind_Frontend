@@ -18,15 +18,17 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { GENDER_OPTIONS } from '@/schema/auth/registerSchema'
 import { useRegisterForm } from '@/hooks/useRegisterForm'
+import Link from 'next/link'
+import { useGenders } from '@/hooks/useGenders'
 
 export default function RegisterForm() {
   const { form, onSubmit, isLoading } = useRegisterForm()
+  const { genders } = useGenders()
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-7'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
         <FormField
           control={form.control}
           name='genderId'
@@ -40,8 +42,8 @@ export default function RegisterForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {GENDER_OPTIONS.map(gender => (
-                    <SelectItem key={gender.genderId} value={gender.genderId}>
+                  {genders.map(gender => (
+                    <SelectItem key={gender.id} value={gender.id}>
                       {gender.name}
                     </SelectItem>
                   ))}
@@ -126,14 +128,22 @@ export default function RegisterForm() {
             </FormItem>
           )}
         />
-        <Button
-          className='font-semibold flex items-center gap-2'
-          type='submit'
-          disabled={isLoading}
-        >
-          {isLoading && <LoaderCircle className='animate-spin w-4 h-4' />}
-          {isLoading ? 'Creando tu cuenta...' : 'Únete a la comunidad'}
-        </Button>
+        <div className='flex flex-col gap-6 md:flex-row justify-between items-center'>
+          <Button
+            className='font-semibold flex items-center gap-2'
+            type='submit'
+            disabled={isLoading}
+          >
+            {isLoading && <LoaderCircle className='animate-spin w-4 h-4' />}
+            {isLoading ? 'Creando tu cuenta...' : 'Únete a la comunidad'}
+          </Button>
+          <p className='text-center text-sm text-muted-foreground font-semibold'>
+            ¿Ya tienes una cuenta?{' '}
+            <Link href='/auth/login' className='text-primary hover:underline font-semibold'>
+              Inicia sesión aquí
+            </Link>
+          </p>
+        </div>
       </form>
     </Form>
   )

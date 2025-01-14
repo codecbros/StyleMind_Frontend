@@ -32,7 +32,7 @@ export function useRegisterForm() {
         className: 'uppercase'
       })
       form.reset()
-      router.push('/')
+      router.push('/auth/login')
     } catch (error: any) {
       toast({
         title: 'Error',
