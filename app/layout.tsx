@@ -16,7 +16,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <html lang='es' suppressHydrationWarning>
         <head />
         <body
-          className={`${playfair_display.variable} ${roboto.variable} ${raleway.variable} antialiased scroll-smooth bg-[#F0F5F9] dark:bg-black/50 `}
+          className={`${playfair_display.variable} ${roboto.variable} ${raleway.variable} antialiased scroll-smooth  bg-[#F0F5F9] dark:bg-background`}
         >
           <ThemeProvider
             attribute='class'
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 </header>
               </>
             )}
-            <main className={`${showMainNav ? 'container mx-auto' : ''} px-4`}>{children}</main>
+            <main className={`${showMainNav ? 'container mx-auto px-4' : ''} `}>{children}</main>
             <Toaster />
           </ThemeProvider>
         </body>

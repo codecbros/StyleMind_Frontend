@@ -8,7 +8,7 @@ export const roboto = Roboto({
 })
 export const raleway = Raleway({
   subsets: ['latin'],
-  weight: ['400', '700'],
+  weight: ['400', '500', '600', '700'],
   style: 'normal',
   variable: '--font-raleway'
 })

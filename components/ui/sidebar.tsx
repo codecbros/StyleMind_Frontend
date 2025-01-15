@@ -263,7 +263,7 @@ const SidebarTrigger = React.forwardRef<
       variant='ghost'
       size='icon'
       className={cn(
-        `h-7 w-7 ${isMobile ? 'absolute bottom-4 right-4 [&_svg]:size-auto ' : ''}`,
+        `h-7 w-7 ${isMobile ? 'fixed bottom-5 right-8 [&_svg]:size-auto ' : ''}`,
         className
       )}
       onClick={event => {
