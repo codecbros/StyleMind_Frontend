@@ -47,6 +47,7 @@ export const userSchema = z.object({
   skinTone: z.string().optional(),
   bodyDescription: z.string().optional(),
   profileDescription: z.string().optional(),
+  birthDate: z.string().optional(),
   genderId: z
     .string({
       message: 'El género es requerido'

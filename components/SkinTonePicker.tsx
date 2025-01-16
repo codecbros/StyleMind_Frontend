@@ -1,4 +1,6 @@
+import { SkinTonePickerProps } from '@/types'
 import { Check } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 const skinTones = [
   { name: 'Muy claro', color: '#FFDBAC' },
@@ -10,16 +12,11 @@ const skinTones = [
   { name: 'Muy oscuro', color: '#321911' }
 ]
 
-interface SkinTonePickerProps {
-  value: string | undefined
-  onChange: (value: string) => void
-}
-
 export function SkinTonePicker({ value, onChange }: SkinTonePickerProps) {
   return (
-    <div className='flex flex-wrap justify-center gap-2'>
+    <div className='flex flex-wrap justify-start ml-2 gap-2'>
       {skinTones.map(tone => (
-        <button
+        <Button
           key={tone.color}
           className={`w-8 h-8 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
             value === tone.color ? 'ring-2 ring-offset-2 ring-blue-500' : ''
@@ -31,7 +28,7 @@ export function SkinTonePicker({ value, onChange }: SkinTonePickerProps) {
         >
           {value === tone.color && <Check className='text-white mx-auto' size={16} />}
           <span className='sr-only'>{tone.name}</span>
-        </button>
+        </Button>
       ))}
     </div>
   )

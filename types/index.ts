@@ -12,3 +12,8 @@ export type Gender = {
   id: string
   name: string
 }
+
+export type SkinTonePickerProps = {
+  value: string | undefined
+  onChange: (value: string) => void
+}

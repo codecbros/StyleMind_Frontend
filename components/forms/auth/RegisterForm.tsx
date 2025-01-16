@@ -36,12 +36,12 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>Género</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className='hover:border-primary/50 focus:ring-primary/20 border border-muted-foreground'>
+                <FormControl className='hover:border-primary/50 border border-muted-foreground'>
+                  <SelectTrigger>
                     <SelectValue placeholder='Selecciona tu género' />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent>
+                <SelectContent className='hover:border-primary/50 border border-muted-foreground'>
                   {genders.map(gender => (
                     <SelectItem key={gender.id} value={gender.id}>
                       {gender.name}
