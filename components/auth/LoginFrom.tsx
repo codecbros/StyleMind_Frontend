@@ -1,18 +1,11 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useLoginForm } from '@/hooks/useLoginForm'
-import { LoaderCircle } from 'lucide-react'
 import Link from 'next/link'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
+import { useLoginForm } from '@/hooks/useLoginForm'
+import { Button } from '../ui/button'
+import { LoaderCircle } from 'lucide-react'
+import { Input } from '../ui/input'
 
 export default function LoginForm() {
   const { form, onSubmit, isLoading } = useLoginForm()

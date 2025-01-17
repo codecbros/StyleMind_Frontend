@@ -1,6 +1,6 @@
 import { playfair_display } from '@/app/fonts'
+import LoginForm from '@/components/auth/LoginFrom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import LoginForm from '@/components/forms/auth/LoginFrom'
 import Image from 'next/image'
 
 export default function login() {

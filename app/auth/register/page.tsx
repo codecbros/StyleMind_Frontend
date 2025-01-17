@@ -1,5 +1,5 @@
 import { playfair_display } from '@/app/fonts'
-import RegisterForm from '@/components/forms/auth/RegisterForm'
+import RegisterForm from '@/components/auth/RegisterForm'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 import Image from 'next/image'

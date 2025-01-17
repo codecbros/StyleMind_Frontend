@@ -1,4 +1,7 @@
 'use client'
+
+import { useGenders } from '@/hooks/useGenders'
+import { useRegisterForm } from '@/hooks/useRegisterForm'
 import {
   Form,
   FormControl,
@@ -7,20 +10,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { LoaderCircle } from 'lucide-react'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import { useRegisterForm } from '@/hooks/useRegisterForm'
+} from '../ui/form'
+import { Button } from '../ui/button'
 import Link from 'next/link'
-import { useGenders } from '@/hooks/useGenders'
+import { LoaderCircle } from 'lucide-react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { Input } from '../ui/input'
 
 export default function RegisterForm() {
   const { form, onSubmit, isLoading } = useRegisterForm()
