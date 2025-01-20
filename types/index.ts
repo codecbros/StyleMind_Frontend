@@ -17,3 +17,17 @@ export type SkinTonePickerProps = {
   value: string | undefined
   onChange: (value: string) => void
 }
+
+export type UserProfile = {
+  email: string
+  firstName: string
+  lastName: string
+  birthDate: string | null
+  profilePicture: string | null
+  bodyDescription: string | null
+  profileDescription: string | null
+  weight: number | null
+  height: number | null
+  gender: Gender
+  skinColor: string | null
+}

@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/store/auth.store'
 import React from 'react'
 
 export default function ProfileView() {

@@ -1,6 +1,7 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { axiosInstance } from './config'
 import { FormLoginType, FormRegisterType, Gender } from '@/types'
+import { useAuthStore } from '@/store/auth.store'
 
 // Para registro (envía por body)
 async function registerRequest(endpoint: string, data: FormRegisterType) {
@@ -20,7 +21,7 @@ async function loginRequest(endpoint: string, credentials: FormLoginType) {
   try {
     const { data } = await axiosInstance.post(
       endpoint,
-      {}, // body vacío
+      {},
       {
         headers: {
           email: credentials.email,
@@ -28,11 +29,28 @@ async function loginRequest(endpoint: string, credentials: FormLoginType) {
         }
       }
     )
-    console.log(data.data.token)
-    return data // Aquí vendría el token
+    return data
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || 'Error en el login.')
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data)
+      throw new Error(error.response?.data)
+    }
+    throw error
+  }
+}
+
+//Obtener perfil de usuario
+async function getProfile(endpoint: string) {
+  try {
+    const { data } = await axiosInstance.get(endpoint, {
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().token}`
+      }
+    })
+    return data
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data?.message || 'Error al obtener el perfil')
     }
     throw error
   }
@@ -53,5 +71,6 @@ async function getGendersRequest(endpoint: string): Promise<Gender[]> {
 export const authService = {
   register: (data: FormRegisterType) => registerRequest('/users', data),
   login: (credentials: FormLoginType) => loginRequest('/auth/login', credentials),
+  getProfile: () => getProfile('/users/myProfile'),
   getGenders: () => getGendersRequest('/genders')
 }
