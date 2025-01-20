@@ -16,30 +16,31 @@ import { Textarea } from '../ui/textarea'
 import { UserSchemaType } from '@/types'
 import { userSchema } from '@/schema/auth/userSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useGenders } from '@/hooks/useGenders'
+import { useAuthStore } from '@/store/auth.store'
+import { Button } from '../ui/button'
 
-export default function ProfileForm() {
-  const { genders } = useGenders()
+export default function ProfileForm({ setIsEditing, isEditing }: any) {
+  const profile = useAuthStore(state => state.profile)
   const form = useForm<UserSchemaType>({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      size: '',
-      hairColor: '',
-      skinTone: '',
-      weight: 0, // Valores numéricos por defecto
-      height: 0,
-      genderId: '',
-      bodyDescription: '',
-      profileDescription: '',
-      birthDate: ''
+      firstName: profile?.firstName || '',
+      lastName: profile?.lastName || '',
+      //hairColor: user?.hairColor || '',
+      skinTone: profile?.skinColor || '',
+      weight: profile?.weight || 0,
+      height: profile?.height || 0,
+      bodyDescription: profile?.bodyDescription || '',
+      profileDescription: profile?.profileDescription || '',
+      birthDate: profile?.birthDate || '',
+      genderName: profile?.gender.name || ''
     }
   })
 
   function onSubmit(data: any) {
     console.log(data)
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
@@ -84,22 +85,18 @@ export default function ProfileForm() {
 
         <FormField
           control={form.control}
-          name='genderId'
-          render={({ field }) => (
+          name='genderName'
+          render={() => (
             <FormItem>
-              <FormLabel>Género *</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormLabel>Género</FormLabel>
+              <Select disabled defaultValue='current'>
                 <FormControl className='hover:border-primary/50 border border-muted-foreground'>
                   <SelectTrigger>
-                    <SelectValue placeholder='Selecciona tu género' />
+                    <SelectValue>{profile?.gender?.name}</SelectValue>
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className='hover:border-primary/50 border border-muted-foreground'>
-                  {genders.map(gender => (
-                    <SelectItem key={gender.id} value={gender.id}>
-                      {gender.name}
-                    </SelectItem>
-                  ))}
+                <SelectContent>
+                  <SelectItem value='current'>{profile?.gender?.name}</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -184,45 +181,19 @@ export default function ProfileForm() {
           <AccordionItem value='item-2'>
             <AccordionTrigger>Características Físicas (Opcional)</AccordionTrigger>
             <AccordionContent className='space-y-6'>
-              <FormField
-                control={form.control}
-                name='skinTone'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tono de piel</FormLabel>
-                    <FormControl>
-                      <SkinTonePicker value={field.value} onChange={field.onChange} />
-                    </FormControl>
-                    <FormDescription>
-                      Selecciona el tono de piel que mejor te describa.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
                 <FormField
                   control={form.control}
-                  name='size'
+                  name='skinTone'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Talla</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl className='hover:border-primary/50 border border-muted-foreground'>
-                          <SelectTrigger>
-                            <SelectValue placeholder='Selecciona una talla' />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className='hover:border-primary/50 border border-muted-foreground'>
-                          <SelectItem value='xs'>XS</SelectItem>
-                          <SelectItem value='s'>S</SelectItem>
-                          <SelectItem value='m'>M</SelectItem>
-                          <SelectItem value='l'>L</SelectItem>
-                          <SelectItem value='xl'>XL</SelectItem>
-                          <SelectItem value='xxl'>XXL</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormDescription>Selecciona tu talla de ropa habitual.</FormDescription>
+                      <FormLabel>Tono de piel</FormLabel>
+                      <FormControl>
+                        <SkinTonePicker value={field.value} onChange={field.onChange} />
+                      </FormControl>
+                      <FormDescription>
+                        Selecciona el tono de piel que mejor te describa.
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -291,6 +262,31 @@ export default function ProfileForm() {
             </FormItem>
           )}
         />
+        <div className='mt-5'>
+          {isEditing ? (
+            <div className='flex justify-between items-center'>
+              <Button className='font-semibold' type='submit'>
+                Guardar
+              </Button>
+              <Button
+                className='font-semibold'
+                type='button'
+                variant='outline'
+                onClick={() => setIsEditing(!isEditing)}
+              >
+                Cancelar
+              </Button>
+            </div>
+          ) : (
+            <Button
+              className='font-semibold'
+              type='button'
+              onClick={() => setIsEditing(!isEditing)}
+            >
+              Editar
+            </Button>
+          )}
+        </div>
       </form>
     </Form>
   )

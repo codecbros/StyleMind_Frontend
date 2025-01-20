@@ -1,80 +1,57 @@
 import { useAuthStore } from '@/store/auth.store'
-import React from 'react'
+import { ProfileField } from '../ProfileField'
+import { Button } from '../ui/button'
 
-export default function ProfileView() {
+export default function ProfileView({ setIsEditing, isEditing }: any) {
+  const user = useAuthStore(state => state.profile)
+
   return (
     <div className='flex flex-col gap-3'>
       <section className='space-y-4'>
         <h4 className='text-lg font-semibold'>Información Básica</h4>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          <div className='flex flex-col gap-2'>
-            <p className='text-sm font-semibold text-gray-500'>Nombres</p>
-            <span className='text-sm text-gray-600'>No especificado</span>
-          </div>
-          <div className='flex flex-col gap-2'>
-            <p className='text-xs font-medium text-gray-500'>Nombres</p>
-            <span className='text-sm text-gray-600'>No especificado</span>
-          </div>
-          <div className='flex flex-col gap-2'>
-            <p className='text-xs font-medium text-gray-500'>Nombres</p>
-            <span className='text-sm text-gray-600'>No especificado</span>
-          </div>
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+          <ProfileField label='Nombres' value={user?.firstName} />
+          <ProfileField label='Apellidos' value={user?.lastName} />
+          <ProfileField label='Genero' value={user?.gender.name} />
+          <ProfileField label='Correo' value={user?.email} />
         </div>
       </section>
       <section className='space-y-4'>
         <h4 className='text-lg font-semibold'>información Personal</h4>
         <div className='grid grid-cols-2 gap-4'>
-          <div className='flex flex-col gap-2'>
-            <p className='text-xs font-medium text-gray-500'>Nombres</p>
-            <span className='text-sm text-gray-600'>No especificado</span>
-          </div>
-          <div className='flex flex-col gap-2'>
-            <p className='text-xs font-medium text-gray-500'>Nombres</p>
-            <span className='text-sm text-gray-600'>No especificado</span>
-          </div>
-          <div className='flex flex-col gap-2'>
-            <p className='text-xs font-medium text-gray-500'>Nombres</p>
-            <span className='text-sm text-gray-600'>No especificado</span>
-          </div>
+          <ProfileField label='Fecha de Nacimiento' value={user?.birthDate} />
+          <ProfileField label='Peso (kg)' value={user?.weight} />
+          <ProfileField label='Altura (cm)' value={user?.height} />
         </div>
       </section>
       <section className='space-y-4'>
         <h4 className='text-lg font-semibold'>Catacreristicas Fisicas</h4>
-        <div className='grid grid-cols-1'>
-          <div className='flex flex-col gap-2'>
-            <p className='text-xs font-medium text-gray-500'>Tono de piel</p>
-            <span className='text-sm text-gray-600'>No especificado</span>
-          </div>
+        <div className='grid grid-cols-2 gap-4'>
+          <ProfileField label='Tono de piel' value={user?.skinColor} />
+          <ProfileField label='Color de cabello' value='Cabello Azul con lineas verdes' />
         </div>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          <div className='flex flex-col gap-2'>
-            <p className='text-xs font-medium text-gray-500'>Nombres</p>
-            <span className='text-sm text-gray-600'>No especificado</span>
-          </div>
-          <div className='flex flex-col gap-2'>
-            <p className='text-xs font-medium text-gray-500'>Nombres</p>
-            <span className='text-sm text-gray-600'>No especificado</span>
-          </div>
-        </div>
-        <div className='grid grid-cols-1'>
-          <div className='flex flex-col gap-2'>
-            <p className='text-xs font-medium text-gray-500'>Tono de piel</p>
-            <textarea disabled className='text-sm text-gray-600 p-2'>
-              No especificado
+        <div className='grid grid-cols-1 gap-4'>
+          <div className='flex flex-col gap-2.5'>
+            <p className='text-sm text-primary/80'>Descripción del cuerpo</p>
+            <textarea disabled className='text-sm text-primary/60 p-2'>
+              {user?.bodyDescription || 'No especificado'}
             </textarea>
           </div>
         </div>
       </section>
-      <section>
+      <section className='space-y-2'>
+        <h4 className='text-lg font-semibold'>Descripción del perfil</h4>
         <div className='grid grid-cols-1'>
-          <div className='flex flex-col gap-2'>
-            <p className='text-xs font-medium text-gray-500'>Descripcion del perfil</p>
-            <textarea disabled className='text-sm text-gray-600 p-2'>
-              No especificado
-            </textarea>
-          </div>
+          <textarea disabled className='text-sm text-primary/60 p-2'>
+            {user?.profileDescription || 'No especificado'}
+          </textarea>
         </div>
       </section>
+      <div className='flex justify-between items-center'>
+        <Button className='font-semibold' type='button' onClick={() => setIsEditing(!isEditing)}>
+          Editar
+        </Button>
+      </div>
     </div>
   )
 }
