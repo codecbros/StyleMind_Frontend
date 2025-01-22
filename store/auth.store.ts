@@ -1,5 +1,6 @@
 import { authService } from '@/services/auth.service'
-import { FormLoginType, UserProfile } from '@/types'
+import { FormLoginType, UserProfile, UserSchemaType } from '@/types'
+import { AxiosError } from 'axios'
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
@@ -8,6 +9,7 @@ export type AuthState = {
   token: string | undefined
   profile: UserProfile | null
   loginUser: (credentials: FormLoginType) => Promise<void>
+  updateProfile: (data: UserSchemaType) => Promise<string>
   logout: () => void
   fetchProfile: () => Promise<void>
 }
@@ -33,10 +35,22 @@ export const useAuthStore = create<AuthState>()(
           }
         },
 
+        updateProfile: async Profiledata => {
+          try {
+            const { message } = await authService.updatedProfile(Profiledata)
+            return message
+          } catch (error) {
+            console.log(error)
+            if (error instanceof AxiosError) {
+              throw new Error(error.response?.data?.message || 'Error al actualizar el perfil')
+            }
+            throw error
+          }
+        },
+
         fetchProfile: async () => {
           try {
             const profile = await authService.getProfile()
-            console.log(profile)
             set({ profile: profile.data })
           } catch (error) {
             throw error

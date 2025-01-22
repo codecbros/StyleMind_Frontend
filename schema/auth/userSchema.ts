@@ -15,24 +15,35 @@ export const userSchema = z.object({
     .regex(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/, {
       message: 'El apellido solo puede contener letras y espacios.'
     }),
-  skinTone: z.string().optional(),
+  skinColor: z.string().optional(),
 
   weight: z
-    .number()
-    .nonnegative({ message: 'El peso debe ser un número positivo.' })
-    .max(500, { message: 'Por favor, introduce un peso menor a 500 kg.' })
+    .union([z.string().transform(val => (val === '' ? undefined : Number(val))), z.number()])
+    .pipe(
+      z
+        .number()
+        .nonnegative({ message: 'El peso debe ser un número positivo.' })
+        .max(500, { message: 'Por favor, introduce un peso menor a 500 kg.' })
+    )
     .optional(),
   height: z
-    .number()
-    .nonnegative({ message: 'La altura debe ser un número positivo.' })
-    .max(500, { message: 'Por favor, introduce una altura menor a 500 cm.' })
+    .union([z.string().transform(val => (val === '' ? undefined : Number(val))), z.number()])
+    .pipe(
+      z
+        .number()
+        .nonnegative({ message: 'La altura debe ser un número positivo.' })
+        .max(500, { message: 'Por favor, introduce una altura menor a 500 cm.' })
+    )
     .optional(),
 
   hairColor: z.string().optional(),
   bodyDescription: z.string().optional(),
   profileDescription: z.string().optional(),
-  birthDate: z.string().optional(),
-  genderName: z
+  birthDate: z
+    .string()
+
+    .optional(),
+  genderId: z
     .string({
       message: 'El género es requerido'
     })

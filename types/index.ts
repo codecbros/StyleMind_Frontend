@@ -30,4 +30,5 @@ export type UserProfile = {
   height: number | null
   gender: Gender
   skinColor: string | null
+  hairColor: string | null
 }

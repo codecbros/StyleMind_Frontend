@@ -9,7 +9,7 @@ export default function ProfileView({ setIsEditing, isEditing }: any) {
     <div className='flex flex-col gap-3'>
       <section className='space-y-4'>
         <h4 className='text-lg font-semibold'>Información Básica</h4>
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+        <div className='grid grid-cols-2 gap-4'>
           <ProfileField label='Nombres' value={user?.firstName} />
           <ProfileField label='Apellidos' value={user?.lastName} />
           <ProfileField label='Genero' value={user?.gender.name} />
@@ -19,9 +19,9 @@ export default function ProfileView({ setIsEditing, isEditing }: any) {
       <section className='space-y-4'>
         <h4 className='text-lg font-semibold'>información Personal</h4>
         <div className='grid grid-cols-2 gap-4'>
-          <ProfileField label='Fecha de Nacimiento' value={user?.birthDate} />
           <ProfileField label='Peso (kg)' value={user?.weight} />
           <ProfileField label='Altura (cm)' value={user?.height} />
+          <ProfileField label='Fecha de Nacimiento' value={user?.birthDate} />
         </div>
       </section>
       <section className='space-y-4'>

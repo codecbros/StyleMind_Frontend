@@ -18,27 +18,43 @@ import { userSchema } from '@/schema/auth/userSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuthStore } from '@/store/auth.store'
 import { Button } from '../ui/button'
+import { useToast } from '@/hooks/use-toast'
+import { useToastHandler } from '@/hooks/useToastHandler'
 
 export default function ProfileForm({ setIsEditing, isEditing }: any) {
+  const { toast } = useToast()
+  const { showSuccessToast, showErrorToast } = useToastHandler()
+
   const profile = useAuthStore(state => state.profile)
+  const fetchProfile = useAuthStore(state => state.fetchProfile)
+
+  const updateProfile = useAuthStore(state => state.updateProfile)
+
   const form = useForm<UserSchemaType>({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      firstName: profile?.firstName || '',
-      lastName: profile?.lastName || '',
-      //hairColor: user?.hairColor || '',
-      skinTone: profile?.skinColor || '',
-      weight: profile?.weight || 0,
-      height: profile?.height || 0,
-      bodyDescription: profile?.bodyDescription || '',
-      profileDescription: profile?.profileDescription || '',
-      birthDate: profile?.birthDate || '',
-      genderName: profile?.gender.name || ''
+      firstName: profile?.firstName || undefined,
+      lastName: profile?.lastName || undefined,
+      skinColor: profile?.skinColor || undefined,
+      weight: profile?.weight || undefined,
+      height: profile?.height || undefined,
+      bodyDescription: profile?.bodyDescription || undefined,
+      profileDescription: profile?.profileDescription || undefined,
+      birthDate: profile?.birthDate || undefined,
+      genderId: undefined,
+      hairColor: profile?.hairColor || undefined
     }
   })
 
-  function onSubmit(data: any) {
-    console.log(data)
+  async function onSubmit(data: any) {
+    try {
+      const profileData = { ...data, genderId: undefined }
+      const response = await updateProfile(profileData)
+      await fetchProfile()
+      showSuccessToast('¡Cambios Guardados!', response)
+    } catch (error) {
+      showErrorToast(error instanceof Error ? error.message : 'Error al iniciar sesión')
+    }
   }
 
   return (
@@ -85,11 +101,11 @@ export default function ProfileForm({ setIsEditing, isEditing }: any) {
 
         <FormField
           control={form.control}
-          name='genderName'
+          name='genderId'
           render={() => (
             <FormItem>
               <FormLabel>Género</FormLabel>
-              <Select disabled defaultValue='current'>
+              <Select disabled defaultValue={'current'}>
                 <FormControl className='hover:border-primary/50 border border-muted-foreground'>
                   <SelectTrigger>
                     <SelectValue>{profile?.gender?.name}</SelectValue>
@@ -119,8 +135,14 @@ export default function ProfileForm({ setIsEditing, isEditing }: any) {
                       <Input
                         type='date'
                         max={new Date().toISOString().split('T')[0]}
-                        {...field}
-                        className='hover:border-primary/50 focus:ring-primary/20 border border-muted-foreground'
+                        value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                        onChange={e => {
+                          const date = new Date(e.target.value)
+                          // Convertimos a formato ISO
+                          const isoDate = date.toISOString()
+                          field.onChange(isoDate)
+                        }}
+                        className='hover:border-primary/50 focus:ring-prim  ary/20 border border-muted-foreground'
                       />
                     </FormControl>
                     <FormDescription>
@@ -184,7 +206,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: any) {
               <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
                 <FormField
                   control={form.control}
-                  name='skinTone'
+                  name='skinColor'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tono de piel</FormLabel>
