@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { axiosInstance } from './config'
-import { FormLoginType, FormRegisterType, Gender, UserSchemaType } from '@/types'
+import { FormLoginType, FormRegisterType, Gender, LoginResponse, UpdateProfileType } from '@/types'
 import { useAuthStore } from '@/store/auth.store'
 
 export type UpdateProfileResponse = {
@@ -21,7 +21,7 @@ async function registerRequest(endpoint: string, data: FormRegisterType) {
 }
 
 // Para login (envía por headers)
-async function loginRequest(endpoint: string, credentials: FormLoginType) {
+async function loginRequest(endpoint: string, credentials: FormLoginType): Promise<LoginResponse> {
   try {
     const { data } = await axiosInstance.post(
       endpoint,
@@ -61,10 +61,7 @@ async function getProfile(endpoint: string) {
 }
 
 //Actualizar Perfil del Usuario
-async function updatedProfile(
-  endpoint: string,
-  data: UserSchemaType
-): Promise<UpdateProfileResponse> {
+async function updatedProfile(endpoint: string, data: UpdateProfileType): Promise<UpdateProfileResponse> {
   try {
     const token = useAuthStore.getState().token
     const response = await axiosInstance.patch(
@@ -80,6 +77,28 @@ async function updatedProfile(
   } catch (error) {
     if (error instanceof AxiosError) {
       throw new Error(error.response?.data?.message || 'Error al obtener el perfil')
+    }
+    throw error
+  }
+}
+
+//Eliminar/Desactivar Usuario
+async function deleteUser(endpoint: string) {
+  console.log('first')
+  console.log(useAuthStore.getState().token)
+  try {
+    const token = useAuthStore.getState().token
+    const { data } = await axiosInstance.patch(endpoint, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    console.log(data)
+    return data
+  } catch (error) {
+    console.log(error)
+    if (error instanceof AxiosError) {
+      throw new Error(error.response?.data?.message || 'Error al Eliminar el usuario')
     }
     throw error
   }
@@ -102,6 +121,7 @@ export const authService = {
   register: (data: FormRegisterType) => registerRequest('/users', data),
   login: (credentials: FormLoginType) => loginRequest('/auth/login', credentials),
   getProfile: () => getProfile('/users/myProfile'),
-  updatedProfile: (data: UserSchemaType) => updatedProfile('/users/update', data),
+  updatedProfile: (data: UpdateProfileType) => updatedProfile('/users/update', data),
+  deleteUser: () => deleteUser('/users/desactivateMyUser'),
   getGenders: () => getGendersRequest('/genders')
 }

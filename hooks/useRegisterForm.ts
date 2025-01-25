@@ -1,18 +1,18 @@
 import { useForm } from 'react-hook-form'
-import { useToast } from './use-toast'
-import { formRegisterSchema } from '@/schema/auth/registerSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { authService } from '@/services/auth.service'
 import { FormRegisterType } from '@/types'
+import { registerSchema } from '@/schema/userSchema'
+import { useToastHandler } from './useToastHandler'
 
 export function useRegisterForm() {
   const [isLoading, setIsLoading] = useState(false) // Estado para el loading
-  const { toast } = useToast()
+  const { showErrorToast, showSuccessToast } = useToastHandler()
   const router = useRouter()
   const form = useForm<FormRegisterType>({
-    resolver: zodResolver(formRegisterSchema),
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -26,20 +26,11 @@ export function useRegisterForm() {
     setIsLoading(true)
     try {
       const response = await authService.register(data)
-      toast({
-        title: '¡Registro exitoso!',
-        description: response.message,
-        className: 'uppercase'
-      })
+      showSuccessToast('¡Registro exitoso!', response.message)
       form.reset()
       router.push('/auth/login')
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.message,
-        variant: 'destructive',
-        className: 'uppercase'
-      })
+      showErrorToast(error.message)
     } finally {
       setIsLoading(false)
     }

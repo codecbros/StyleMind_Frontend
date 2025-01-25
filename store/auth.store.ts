@@ -1,5 +1,5 @@
 import { authService } from '@/services/auth.service'
-import { FormLoginType, UserProfile, UserSchemaType } from '@/types'
+import { FormLoginType, LoginResponse, UpdateProfileType, UserProfile } from '@/types'
 import { AxiosError } from 'axios'
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
@@ -8,8 +8,8 @@ export type AuthState = {
   role: string | null
   token: string | undefined
   profile: UserProfile | null
-  loginUser: (credentials: FormLoginType) => Promise<void>
-  updateProfile: (data: UserSchemaType) => Promise<string>
+  loginUser: (credentials: FormLoginType) => Promise<LoginResponse>
+  updateProfile: (data: UpdateProfileType) => Promise<string>
   logout: () => void
   fetchProfile: () => Promise<void>
 }
@@ -29,6 +29,7 @@ export const useAuthStore = create<AuthState>()(
             set({ token, role })
             const profile = await authService.getProfile()
             set({ profile: profile.data })
+            return response
           } catch (error) {
             set({ role: null, token: undefined })
             throw error

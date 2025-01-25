@@ -1,23 +1,28 @@
 import { z } from 'zod'
-import { formRegisterSchema } from '@/schema/auth/registerSchema'
-import { userSchema } from '@/schema/auth/userSchema'
 
-type Auth = z.infer<typeof formRegisterSchema>
+import { loginSchema, registerSchema, updateProfileSchema } from '@/schema/userSchema'
 
-export type FormLoginType = Pick<Auth, 'email' | 'password'>
-export type FormRegisterType = z.infer<typeof formRegisterSchema>
-export type UserSchemaType = z.infer<typeof userSchema>
+export type FormLoginType = z.infer<typeof loginSchema>
+export type FormRegisterType = z.infer<typeof registerSchema>
+export type UpdateProfileType = z.infer<typeof updateProfileSchema>
 
 export type Gender = {
   id: string
   name: string
 }
 
+export type LoginResponse = {
+  data: {
+    token: string
+    role: string
+  }
+  message: string
+}
+
 export type SkinTonePickerProps = {
   value: string | undefined
   onChange: (value: string) => void
 }
-
 export type UserProfile = {
   email: string
   firstName: string

@@ -1,37 +1,39 @@
 import { useForm } from 'react-hook-form'
 import { SkinTonePicker } from '../SkinTonePicker'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '../ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Textarea } from '../ui/textarea'
-import { UserSchemaType } from '@/types'
-import { userSchema } from '@/schema/auth/userSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuthStore } from '@/store/auth.store'
 import { Button } from '../ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { useToastHandler } from '@/hooks/useToastHandler'
+import { authService } from '@/services/auth.service'
+import { UpdateProfileType } from '@/types'
+import { updateProfileSchema } from '@/schema/userSchema'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from '../ui/alert-dialog'
 
 export default function ProfileForm({ setIsEditing, isEditing }: any) {
   const { toast } = useToast()
   const { showSuccessToast, showErrorToast } = useToastHandler()
-
   const profile = useAuthStore(state => state.profile)
   const fetchProfile = useAuthStore(state => state.fetchProfile)
-
   const updateProfile = useAuthStore(state => state.updateProfile)
 
-  const form = useForm<UserSchemaType>({
-    resolver: zodResolver(userSchema),
+  const form = useForm<UpdateProfileType>({
+    resolver: zodResolver(updateProfileSchema),
     defaultValues: {
       firstName: profile?.firstName || undefined,
       lastName: profile?.lastName || undefined,
@@ -54,6 +56,27 @@ export default function ProfileForm({ setIsEditing, isEditing }: any) {
       showSuccessToast('¡Cambios Guardados!', response)
     } catch (error) {
       showErrorToast(error instanceof Error ? error.message : 'Error al iniciar sesión')
+    }
+  }
+
+  const handleDeleteAccount = async () => {
+    console.log('eliminando')
+    try {
+      await authService.deleteUser()
+      console.log('eliminada')
+      toast({
+        title: 'Cuenta eliminada',
+        description: 'Tu cuenta ha sido eliminada exitosamente.',
+        className: 'uppercase'
+      })
+    } catch (error) {
+      console.log(error)
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'No se pudo eliminar la cuenta.',
+        variant: 'destructive',
+        className: 'uppercase'
+      })
     }
   }
 
@@ -145,9 +168,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: any) {
                         className='hover:border-primary/50 focus:ring-prim  ary/20 border border-muted-foreground'
                       />
                     </FormControl>
-                    <FormDescription>
-                      Tu fecha de nacimiento se usa para calcular tu edad.
-                    </FormDescription>
+                    <FormDescription>Tu fecha de nacimiento se usa para calcular tu edad.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -213,9 +234,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: any) {
                       <FormControl>
                         <SkinTonePicker value={field.value} onChange={field.onChange} />
                       </FormControl>
-                      <FormDescription>
-                        Selecciona el tono de piel que mejor te describa.
-                      </FormDescription>
+                      <FormDescription>Selecciona el tono de piel que mejor te describa.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -253,9 +272,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: any) {
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>
-                      Proporciona una breve descripción de tu cuerpo (máximo 500 caracteres).
-                    </FormDescription>
+                    <FormDescription>Proporciona una breve descripción de tu cuerpo (máximo 350 caracteres).</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -277,9 +294,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: any) {
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                Proporciona una breve descripción de ti mismo (máximo 1000 caracteres).
-              </FormDescription>
+              <FormDescription>Proporciona una breve descripción de ti mismo (máximo 500 caracteres).</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -290,21 +305,30 @@ export default function ProfileForm({ setIsEditing, isEditing }: any) {
               <Button className='font-semibold' type='submit'>
                 Guardar
               </Button>
-              <Button
-                className='font-semibold'
-                type='button'
-                variant='outline'
-                onClick={() => setIsEditing(!isEditing)}
-              >
+              <Button className='font-semibold' type='button' variant='outline' onClick={() => setIsEditing(!isEditing)}>
                 Cancelar
               </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant='destructive'>Eliminar Cuenta</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>¿Estás completamente seguro?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Esta acción eliminará tu cuenta de forma permanente y no podrás recuperarla. Todos tus datos asociados se perderán. Por favor,
+                      confirma si deseas continuar.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDeleteAccount}>Eliminar</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           ) : (
-            <Button
-              className='font-semibold'
-              type='button'
-              onClick={() => setIsEditing(!isEditing)}
-            >
+            <Button className='font-semibold' type='button' onClick={() => setIsEditing(!isEditing)}>
               Editar
             </Button>
           )}

@@ -19,18 +19,12 @@ export default function login() {
       <section className='mx-auto w-full lg:col-span-1 2xl:col-span-2'>
         <Card className='border border-muted-foreground shadow-xl'>
           <CardHeader>
-            <CardTitle
-              className={`${playfair_display.className} font-extrabold text-center leading-7 md:text-start uppercase`}
-            >
+            <CardTitle className={`${playfair_display.className} font-extrabold text-center leading-7 md:text-start uppercase`}>
               ¡Bienvenido de nuevo!
             </CardTitle>
             <div className='space-y-1 pt-2'>
-              <CardDescription>
-                Ingresa a tu cuenta para descubrir nuevas combinaciones
-              </CardDescription>
-              <CardDescription className='text-sm text-muted-foreground'>
-                Accede a tus outfits personalizados y recomendaciones de IA
-              </CardDescription>
+              <CardDescription>Ingresa a tu cuenta para descubrir nuevas combinaciones</CardDescription>
+              <CardDescription className='text-sm text-muted-foreground'>Accede a tus outfits personalizados y recomendaciones de IA</CardDescription>
             </div>
           </CardHeader>
           <CardContent>
