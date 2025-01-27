@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form'
-import { useToast } from './use-toast'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -12,8 +11,6 @@ export function useLoginForm() {
   const loginUser = useAuthStore(state => state.loginUser)
   const { showErrorToast, showSuccessToast } = useToastHandler()
   const [isLoading, setIsLoading] = useState(false)
-
-  const { toast } = useToast()
   const router = useRouter()
 
   const form = useForm<FormLoginType>({

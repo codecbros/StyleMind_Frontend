@@ -84,17 +84,18 @@ async function updatedProfile(endpoint: string, data: UpdateProfileType): Promis
 
 //Eliminar/Desactivar Usuario
 async function deleteUser(endpoint: string) {
-  console.log('first')
-  console.log(useAuthStore.getState().token)
   try {
     const token = useAuthStore.getState().token
-    const { data } = await axiosInstance.patch(endpoint, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const response = await axiosInstance.patch(
+      endpoint,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
-    })
-    console.log(data)
-    return data
+    )
+    return response
   } catch (error) {
     console.log(error)
     if (error instanceof AxiosError) {

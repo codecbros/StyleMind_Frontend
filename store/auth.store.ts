@@ -10,6 +10,7 @@ export type AuthState = {
   profile: UserProfile | null
   loginUser: (credentials: FormLoginType) => Promise<LoginResponse>
   updateProfile: (data: UpdateProfileType) => Promise<string>
+  deleteProfile: () => void
   logout: () => void
   fetchProfile: () => Promise<void>
 }
@@ -53,6 +54,15 @@ export const useAuthStore = create<AuthState>()(
           try {
             const profile = await authService.getProfile()
             set({ profile: profile.data })
+          } catch (error) {
+            throw error
+          }
+        },
+
+        deleteProfile: async () => {
+          try {
+            await authService.deleteUser()
+            set({ role: null, token: undefined, profile: null })
           } catch (error) {
             throw error
           }

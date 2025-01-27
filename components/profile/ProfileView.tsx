@@ -28,7 +28,7 @@ export default function ProfileView({ setIsEditing, isEditing }: any) {
         <h4 className='text-lg font-semibold'>Catacreristicas Fisicas</h4>
         <div className='grid grid-cols-2 gap-4'>
           <ProfileField label='Tono de piel' value={user?.skinColor} />
-          <ProfileField label='Color de cabello' value='Cabello Azul con lineas verdes' />
+          <ProfileField label='Color de cabello' value={user?.hairColor} />
         </div>
         <div className='grid grid-cols-1 gap-4'>
           <div className='flex flex-col gap-2.5'>

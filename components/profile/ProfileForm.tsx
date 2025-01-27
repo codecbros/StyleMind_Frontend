@@ -8,9 +8,7 @@ import { Textarea } from '../ui/textarea'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuthStore } from '@/store/auth.store'
 import { Button } from '../ui/button'
-import { useToast } from '@/hooks/use-toast'
 import { useToastHandler } from '@/hooks/useToastHandler'
-import { authService } from '@/services/auth.service'
 import { UpdateProfileType } from '@/types'
 import { updateProfileSchema } from '@/schema/userSchema'
 import {
@@ -24,11 +22,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '../ui/alert-dialog'
+import { useRouter } from 'next/navigation'
 
 export default function ProfileForm({ setIsEditing, isEditing }: any) {
-  const { toast } = useToast()
   const { showSuccessToast, showErrorToast } = useToastHandler()
+  const router = useRouter()
   const profile = useAuthStore(state => state.profile)
+  const deleteProfile = useAuthStore(state => state.deleteProfile)
   const fetchProfile = useAuthStore(state => state.fetchProfile)
   const updateProfile = useAuthStore(state => state.updateProfile)
 
@@ -60,23 +60,12 @@ export default function ProfileForm({ setIsEditing, isEditing }: any) {
   }
 
   const handleDeleteAccount = async () => {
-    console.log('eliminando')
     try {
-      await authService.deleteUser()
-      console.log('eliminada')
-      toast({
-        title: 'Cuenta eliminada',
-        description: 'Tu cuenta ha sido eliminada exitosamente.',
-        className: 'uppercase'
-      })
+      deleteProfile()
+      showSuccessToast('Cuenta eliminada', 'Tu cuenta ha sido eliminada exitosamente.')
+      router.push('/')
     } catch (error) {
-      console.log(error)
-      toast({
-        title: 'Error',
-        description: error instanceof Error ? error.message : 'No se pudo eliminar la cuenta.',
-        variant: 'destructive',
-        className: 'uppercase'
-      })
+      showErrorToast(error instanceof Error ? error.message : 'No se pudo eliminar la cuenta.')
     }
   }
 
