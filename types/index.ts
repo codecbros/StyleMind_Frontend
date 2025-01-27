@@ -37,3 +37,8 @@ export type UserProfile = {
   skinColor: string | null
   hairColor: string | null
 }
+
+export type ProtectedRoute = {
+  path: string
+  redirectTo: string
+}

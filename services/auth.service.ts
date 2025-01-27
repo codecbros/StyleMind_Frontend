@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios'
 import { axiosInstance } from './config'
 import { FormLoginType, FormRegisterType, Gender, LoginResponse, UpdateProfileType } from '@/types'
 import { useAuthStore } from '@/store/auth.store'
+import { useSetCookie } from 'cookies-next/client'
 
 export type UpdateProfileResponse = {
   message: string
@@ -33,6 +34,7 @@ async function loginRequest(endpoint: string, credentials: FormLoginType): Promi
         }
       }
     )
+
     return data
   } catch (error) {
     if (error instanceof AxiosError) {

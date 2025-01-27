@@ -23,10 +23,12 @@ import {
   AlertDialogTrigger
 } from '../ui/alert-dialog'
 import { useRouter } from 'next/navigation'
+import { useDeleteCookie } from 'cookies-next/client'
 
 export default function ProfileForm({ setIsEditing, isEditing }: any) {
-  const { showSuccessToast, showErrorToast } = useToastHandler()
   const router = useRouter()
+  const deleteCookie = useDeleteCookie()
+  const { showSuccessToast, showErrorToast } = useToastHandler()
   const profile = useAuthStore(state => state.profile)
   const deleteProfile = useAuthStore(state => state.deleteProfile)
   const fetchProfile = useAuthStore(state => state.fetchProfile)
@@ -62,6 +64,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: any) {
   const handleDeleteAccount = async () => {
     try {
       deleteProfile()
+      deleteCookie('cookie-token')
       showSuccessToast('Cuenta eliminada', 'Tu cuenta ha sido eliminada exitosamente.')
       router.push('/')
     } catch (error) {
