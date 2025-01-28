@@ -1,29 +1,26 @@
 import { z } from 'zod'
-
 import { loginSchema, registerSchema, updateProfileSchema } from '@/schema/userSchema'
 
+// **Inferencia de Zod Schemas**
 export type FormLoginType = z.infer<typeof loginSchema>
 export type FormRegisterType = z.infer<typeof registerSchema>
 export type UpdateProfileType = z.infer<typeof updateProfileSchema>
 
+// **Tipo genérico para respuestas de API**
+export type ApiResponse<T> = {
+  data: T
+  message: string
+  statusCode: number
+}
+
+// **Género del usuario**
 export type Gender = {
   id: string
   name: string
 }
 
-export type LoginResponse = {
-  data: {
-    token: string
-    role: string
-  }
-  message: string
-}
-
-export type SkinTonePickerProps = {
-  value: string | undefined
-  onChange: (value: string) => void
-}
-export type UserProfile = {
+// **Perfil del usuario**
+export interface UserProfile {
   email: string
   firstName: string
   lastName: string
@@ -36,6 +33,22 @@ export type UserProfile = {
   gender: Gender
   skinColor: string | null
   hairColor: string | null
+}
+
+// **Respuestas de API específicas**
+export type LoginResponse = ApiResponse<{
+  token: string
+  role: string
+}>
+
+export type GetProfileResponse = ApiResponse<UserProfile>
+
+export type UpdateProfileResponse = ApiResponse<null> // Reutiliza el genérico
+
+// **Props reutilizables**
+export type SkinTonePickerProps = {
+  value: string | undefined
+  onChange: (value: string) => void
 }
 
 export type ProtectedRoute = {

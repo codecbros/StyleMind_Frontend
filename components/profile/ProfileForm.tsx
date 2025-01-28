@@ -1,16 +1,10 @@
-import { useForm } from 'react-hook-form'
 import { SkinTonePicker } from '../SkinTonePicker'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Textarea } from '../ui/textarea'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useAuthStore } from '@/store/auth.store'
 import { Button } from '../ui/button'
-import { useToastHandler } from '@/hooks/useToastHandler'
-import { UpdateProfileType } from '@/types'
-import { updateProfileSchema } from '@/schema/userSchema'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,55 +16,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from '../ui/alert-dialog'
-import { useRouter } from 'next/navigation'
-import { useDeleteCookie } from 'cookies-next/client'
+import { LoaderCircle } from 'lucide-react'
+import { useProfileForm } from '@/hooks/forms/useProfileForm'
 
 export default function ProfileForm({ setIsEditing, isEditing }: any) {
-  const router = useRouter()
-  const deleteCookie = useDeleteCookie()
-  const { showSuccessToast, showErrorToast } = useToastHandler()
-  const profile = useAuthStore(state => state.profile)
-  const deleteProfile = useAuthStore(state => state.deleteProfile)
-  const fetchProfile = useAuthStore(state => state.fetchProfile)
-  const updateProfile = useAuthStore(state => state.updateProfile)
-
-  const form = useForm<UpdateProfileType>({
-    resolver: zodResolver(updateProfileSchema),
-    defaultValues: {
-      firstName: profile?.firstName || undefined,
-      lastName: profile?.lastName || undefined,
-      skinColor: profile?.skinColor || undefined,
-      weight: profile?.weight || undefined,
-      height: profile?.height || undefined,
-      bodyDescription: profile?.bodyDescription || undefined,
-      profileDescription: profile?.profileDescription || undefined,
-      birthDate: profile?.birthDate || undefined,
-      genderId: undefined,
-      hairColor: profile?.hairColor || undefined
-    }
-  })
-
-  async function onSubmit(data: any) {
-    try {
-      const profileData = { ...data, genderId: undefined }
-      const response = await updateProfile(profileData)
-      await fetchProfile()
-      showSuccessToast('¡Cambios Guardados!', response)
-    } catch (error) {
-      showErrorToast(error instanceof Error ? error.message : 'Error al iniciar sesión')
-    }
-  }
-
-  const handleDeleteAccount = async () => {
-    try {
-      deleteProfile()
-      deleteCookie('cookie-token')
-      showSuccessToast('Cuenta eliminada', 'Tu cuenta ha sido eliminada exitosamente.')
-      router.push('/')
-    } catch (error) {
-      showErrorToast(error instanceof Error ? error.message : 'No se pudo eliminar la cuenta.')
-    }
-  }
+  const { form, onSubmit, isLoading, handleDeleteAccount, profile } = useProfileForm({ setIsEditing, isEditing })
 
   return (
     <Form {...form}>
@@ -294,8 +244,9 @@ export default function ProfileForm({ setIsEditing, isEditing }: any) {
         <div className='mt-5'>
           {isEditing ? (
             <div className='flex justify-between items-center'>
-              <Button className='font-semibold' type='submit'>
-                Guardar
+              <Button className='font-semibold' type='submit' disabled={isLoading}>
+                {isLoading && <LoaderCircle className='animate-spin w-4 h-4' />}
+                {isLoading ? 'Actualizando Datos...' : 'Guardar'}
               </Button>
               <Button className='font-semibold' type='button' variant='outline' onClick={() => setIsEditing(!isEditing)}>
                 Cancelar

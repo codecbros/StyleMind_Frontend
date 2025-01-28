@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { FormLoginType } from '@/types'
 import { useAuthStore } from '@/store/auth.store'
 import { loginSchema } from '@/schema/userSchema'
-import { useToastHandler } from './useToastHandler'
+import { useToastHandler } from '../useToastHandler'
 import { useSetCookie } from 'cookies-next/client'
 
 export function useLoginForm() {

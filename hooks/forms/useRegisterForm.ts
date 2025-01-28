@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { authService } from '@/services/auth.service'
 import { FormRegisterType } from '@/types'
 import { registerSchema } from '@/schema/userSchema'
-import { useToastHandler } from './useToastHandler'
+import { useToastHandler } from '../useToastHandler'
 
 export function useRegisterForm() {
   const [isLoading, setIsLoading] = useState(false) // Estado para el loading

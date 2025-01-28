@@ -1,17 +1,22 @@
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import { axiosInstance } from './config'
-import { FormLoginType, FormRegisterType, Gender, LoginResponse, UpdateProfileType } from '@/types'
+import {
+  ApiResponse,
+  FormLoginType,
+  FormRegisterType,
+  Gender,
+  GetProfileResponse,
+  LoginResponse,
+  UpdateProfileResponse,
+  UpdateProfileType,
+  UserProfile
+} from '@/types'
 import { useAuthStore } from '@/store/auth.store'
-import { useSetCookie } from 'cookies-next/client'
 
-export type UpdateProfileResponse = {
-  message: string
-  status: string
-}
 // Para registro (envía por body)
-async function registerRequest(endpoint: string, data: FormRegisterType) {
+async function registerRequest(endpoint: string, data: FormRegisterType): Promise<ApiResponse<null>> {
   try {
-    const response = await axiosInstance.post(endpoint, data)
+    const response = await axiosInstance.post<ApiResponse<null>>(endpoint, data)
     return response.data
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -24,7 +29,7 @@ async function registerRequest(endpoint: string, data: FormRegisterType) {
 // Para login (envía por headers)
 async function loginRequest(endpoint: string, credentials: FormLoginType): Promise<LoginResponse> {
   try {
-    const { data } = await axiosInstance.post(
+    const response = await axiosInstance.post<LoginResponse>(
       endpoint,
       {},
       {
@@ -35,7 +40,7 @@ async function loginRequest(endpoint: string, credentials: FormLoginType): Promi
       }
     )
 
-    return data
+    return response.data
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(error.response?.data)
@@ -46,14 +51,14 @@ async function loginRequest(endpoint: string, credentials: FormLoginType): Promi
 }
 
 //Obtener perfil de usuario
-async function getProfile(endpoint: string) {
+async function getProfile(endpoint: string): Promise<UserProfile> {
   try {
-    const { data } = await axiosInstance.get(endpoint, {
+    const response = await axiosInstance.get<GetProfileResponse>(endpoint, {
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().token}`
       }
     })
-    return data
+    return response.data.data
   } catch (error) {
     if (error instanceof AxiosError) {
       throw new Error(error.response?.data?.message || 'Error al obtener el perfil')
@@ -85,10 +90,10 @@ async function updatedProfile(endpoint: string, data: UpdateProfileType): Promis
 }
 
 //Eliminar/Desactivar Usuario
-async function deleteUser(endpoint: string) {
+async function deleteUser(endpoint: string): Promise<ApiResponse<null>> {
   try {
     const token = useAuthStore.getState().token
-    const response = await axiosInstance.patch(
+    const response = await axiosInstance.patch<ApiResponse<null>>(
       endpoint,
       {},
       {
@@ -97,7 +102,7 @@ async function deleteUser(endpoint: string) {
         }
       }
     )
-    return response
+    return response.data
   } catch (error) {
     console.log(error)
     if (error instanceof AxiosError) {

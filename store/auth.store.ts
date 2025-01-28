@@ -29,7 +29,7 @@ export const useAuthStore = create<AuthState>()(
             const { token, role } = response.data
             set({ token, role })
             const profile = await authService.getProfile()
-            set({ profile: profile.data })
+            set({ profile: profile })
             return response
           } catch (error) {
             set({ role: null, token: undefined })
@@ -39,8 +39,8 @@ export const useAuthStore = create<AuthState>()(
 
         updateProfile: async Profiledata => {
           try {
-            const { message } = await authService.updatedProfile(Profiledata)
-            return message
+            const response = await authService.updatedProfile(Profiledata)
+            return response.message
           } catch (error) {
             console.log(error)
             if (error instanceof AxiosError) {
@@ -53,7 +53,7 @@ export const useAuthStore = create<AuthState>()(
         fetchProfile: async () => {
           try {
             const profile = await authService.getProfile()
-            set({ profile: profile.data })
+            set({ profile: profile })
           } catch (error) {
             throw error
           }

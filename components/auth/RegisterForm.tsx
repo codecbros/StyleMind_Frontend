@@ -1,21 +1,13 @@
 'use client'
 
 import { useGenders } from '@/hooks/useGenders'
-import { useRegisterForm } from '@/hooks/useRegisterForm'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '../ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import { LoaderCircle } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Input } from '../ui/input'
+import { useRegisterForm } from '@/hooks/forms/useRegisterForm'
 
 export default function RegisterForm() {
   const { form, onSubmit, isLoading } = useRegisterForm()
@@ -109,26 +101,15 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
-                <Input
-                  type='password'
-                  className='hover:border-primary/50 focus:ring-primary/20  border border-muted-foreground'
-                  {...field}
-                />
+                <Input type='password' className='hover:border-primary/50 focus:ring-primary/20  border border-muted-foreground' {...field} />
               </FormControl>
-              <FormDescription>
-                {' '}
-                Usa al menos 6 caracteres, incluyendo números y símbolos
-              </FormDescription>
+              <FormDescription> Usa al menos 6 caracteres, incluyendo números y símbolos</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
         <div className='flex flex-col gap-6 md:flex-row justify-between items-center'>
-          <Button
-            className='font-semibold flex items-center gap-2'
-            type='submit'
-            disabled={isLoading}
-          >
+          <Button className='font-semibold flex items-center gap-2' type='submit' disabled={isLoading}>
             {isLoading && <LoaderCircle className='animate-spin w-4 h-4' />}
             {isLoading ? 'Creando tu cuenta...' : 'Únete a la comunidad'}
           </Button>

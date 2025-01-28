@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
-import { useLoginForm } from '@/hooks/useLoginForm'
+import { useLoginForm } from '@/hooks/forms/useLoginForm'
 import { Button } from '../ui/button'
 import { LoaderCircle } from 'lucide-react'
 import { Input } from '../ui/input'
@@ -50,11 +50,7 @@ export default function LoginForm() {
         />
 
         <div className='flex flex-col gap-6 md:flex-row justify-between items-center'>
-          <Button
-            className='font-semibold flex items-center gap-2'
-            type='submit'
-            disabled={isLoading}
-          >
+          <Button className='font-semibold flex items-center gap-2' type='submit' disabled={isLoading}>
             {isLoading && <LoaderCircle className='animate-spin w-4 h-4' />}
             {isLoading ? 'Iniciando sesión...' : 'Ingresar a mi cuenta'}
           </Button>
