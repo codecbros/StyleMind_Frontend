@@ -1,5 +1,5 @@
 import { authService } from '@/services/auth.service'
-import { FormLoginType, LoginResponse, UpdateProfileType, UserProfile } from '@/types'
+import { FormLoginType, Gender, LoginResponse, UpdateProfileType, UserProfile } from '@/types'
 import { AxiosError } from 'axios'
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
@@ -8,11 +8,13 @@ export type AuthState = {
   role: string | null
   token: string | undefined
   profile: UserProfile | null
+  genders: Gender[]
   loginUser: (credentials: FormLoginType) => Promise<LoginResponse>
   updateProfile: (data: UpdateProfileType) => Promise<string>
-  deleteProfile: () => void
-  logout: () => void
   fetchProfile: () => Promise<void>
+  deleteProfile: () => void
+  getGenders: () => void
+  logout: () => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -22,6 +24,20 @@ export const useAuthStore = create<AuthState>()(
         role: null,
         token: undefined,
         profile: null,
+        genders: [],
+
+        getGenders: async () => {
+          try {
+            const genders = await authService.getGenders()
+            set({ genders })
+            return
+          } catch (error) {
+            if (error instanceof AxiosError) {
+              throw new Error(error.response?.data?.message || 'Error al obtener los generos')
+            }
+            throw error
+          }
+        },
 
         loginUser: async credentials => {
           try {

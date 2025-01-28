@@ -113,7 +113,7 @@ async function deleteUser(endpoint: string): Promise<ApiResponse<null>> {
 }
 
 //Obtener Generos
-async function getGendersRequest(endpoint: string): Promise<Gender[]> {
+async function getGenders(endpoint: string): Promise<Gender[]> {
   try {
     const { data } = await axiosInstance.get(endpoint)
     return data.data
@@ -131,5 +131,5 @@ export const authService = {
   getProfile: () => getProfile('/users/myProfile'),
   updatedProfile: (data: UpdateProfileType) => updatedProfile('/users/update', data),
   deleteUser: () => deleteUser('/users/desactivateMyUser'),
-  getGenders: () => getGendersRequest('/genders')
+  getGenders: () => getGenders('/genders')
 }

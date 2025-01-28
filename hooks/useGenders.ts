@@ -1,22 +1,18 @@
-import { authService } from '@/services/auth.service'
-import { Gender } from '@/types'
+import { useAuthStore } from '@/store/auth.store'
 import { useEffect, useState } from 'react'
 
-export function useGenders() {
-  const [genders, setGenders] = useState<Gender[]>([])
+export const useGenders = () => {
+  const genders = useAuthStore(state => state.genders)
+  const getGenders = useAuthStore(state => state.getGenders)
 
   useEffect(() => {
-    const loadGenders = async () => {
-      try {
-        const data = await authService.getGenders()
-        setGenders(data)
-      } catch (error) {
-        console.error('Error al cargar géneros:', error)
-      }
-    }
+    const fetchGenders = () => {
+      if (genders.length > 0) return
 
-    loadGenders()
-  }, [])
+      getGenders()
+    }
+    fetchGenders()
+  }, [genders, getGenders])
 
   return { genders }
 }
