@@ -1,5 +1,4 @@
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { useToastHandler } from '../useToastHandler'
 import { useDeleteCookie } from 'cookies-next/client'
 import { useAuthStore } from '@/store/auth.store'
@@ -7,16 +6,17 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { updateProfileSchema } from '@/schema/userSchema'
 import { UpdateProfileType } from '@/types'
+import { useLoading } from '../useLoading'
 
 export function useProfileForm({ setIsEditing, isEditing }: any) {
   const router = useRouter()
-  const { showErrorToast, showSuccessToast } = useToastHandler()
-  const [isLoading, setIsLoading] = useState(false)
   const deleteCookie = useDeleteCookie()
   const profile = useAuthStore(state => state.profile)
   const deleteProfile = useAuthStore(state => state.deleteProfile)
   const fetchProfile = useAuthStore(state => state.fetchProfile)
   const updateProfile = useAuthStore(state => state.updateProfile)
+  const { showErrorToast, showSuccessToast } = useToastHandler()
+  const { isLoading, startLoading, stopLoading } = useLoading()
 
   const form = useForm<UpdateProfileType>({
     resolver: zodResolver(updateProfileSchema),
@@ -35,7 +35,7 @@ export function useProfileForm({ setIsEditing, isEditing }: any) {
   })
 
   async function onSubmit(data: UpdateProfileType) {
-    setIsLoading(true)
+    startLoading()
     try {
       const profileData = { ...data, genderId: undefined }
       const response = await updateProfile(profileData)
@@ -45,7 +45,7 @@ export function useProfileForm({ setIsEditing, isEditing }: any) {
     } catch (error) {
       showErrorToast(error instanceof Error ? error.message : 'Error al iniciar sesión')
     } finally {
-      setIsLoading(false)
+      stopLoading()
     }
   }
 

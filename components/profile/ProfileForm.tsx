@@ -18,8 +18,14 @@ import {
 } from '../ui/alert-dialog'
 import { LoaderCircle } from 'lucide-react'
 import { useProfileForm } from '@/hooks/forms/useProfileForm'
+import { Dispatch, SetStateAction } from 'react'
 
-export default function ProfileForm({ setIsEditing, isEditing }: any) {
+type authProps = {
+  isEditing: boolean
+  setIsEditing: Dispatch<SetStateAction<boolean>>
+}
+
+export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
   const { form, onSubmit, isLoading, handleDeleteAccount, profile } = useProfileForm({ setIsEditing, isEditing })
 
   return (

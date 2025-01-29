@@ -1,8 +1,13 @@
 import { useAuthStore } from '@/store/auth.store'
 import { ProfileField } from '../ProfileField'
 import { Button } from '../ui/button'
+import { Dispatch, SetStateAction } from 'react'
 
-export default function ProfileView({ setIsEditing, isEditing }: any) {
+type authProps = {
+  isEditing: boolean
+  setIsEditing: Dispatch<SetStateAction<boolean>>
+}
+export default function ProfileView({ setIsEditing, isEditing }: authProps) {
   const user = useAuthStore(state => state.profile)
 
   return (
