@@ -9,9 +9,9 @@ export default function Profile() {
 
   return (
     <>
-      <h1 className='text-center text-xl lg:text-3xl uppercase font-extrabold'>perfil</h1>
+      <h1 className='text-center text-2xl lg:text-3xl uppercase font-extrabold'>perfil</h1>
       <section className='w-full lg:w-3/4 2xl:w-3/5 flex justify-center mx-auto'>
-        <Card className='p-5 mt-3 w-full border border-muted-foreground shadow-xl'>
+        <Card className='p-5 mt-3 w-full shadow-xl'>
           <h4 className='mb-3 text-lg lg:text-xl font-semibold'>
             Completa tu perfil: Cuanta más información proporciones, mejores serán las combinaciones
           </h4>

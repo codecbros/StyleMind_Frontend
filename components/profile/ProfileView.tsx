@@ -52,7 +52,7 @@ export default function ProfileView({ setIsEditing, isEditing }: authProps) {
           </textarea>
         </div>
       </section>
-      <div className='flex justify-between items-center'>
+      <div className='flex items-center justify-end'>
         <Button className='font-semibold' type='button' onClick={() => setIsEditing(!isEditing)}>
           Editar
         </Button>

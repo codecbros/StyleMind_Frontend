@@ -31,6 +31,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+        <FormLabel>Informacion Personal</FormLabel>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
           <FormField
             control={form.control}
@@ -134,8 +135,9 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                           type='number'
                           step='0.1'
                           placeholder='70.5'
+                          min='0'
                           {...field}
-                          className='hover:border-primary/50 focus:ring-primary/20  border border-muted-foreground '
+                          className='hover:border-primary/50 focus:ring-primary/20 border border-muted-foreground'
                         />
                       </FormControl>
                       <FormDescription>Tu peso en kilogramos.</FormDescription>
@@ -152,9 +154,11 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                       <FormControl>
                         <Input
                           type='number'
+                          step='1'
                           placeholder='175'
+                          min='0'
                           {...field}
-                          className='hover:border-primary/50 focus:ring-primary/20  border border-muted-foreground'
+                          className='hover:border-primary/50 focus:ring-primary/20 border border-muted-foreground'
                         />
                       </FormControl>
                       <FormDescription>Tu altura en centímetros.</FormDescription>
@@ -234,7 +238,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
           name='profileDescription'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Descripción del perfil (Opcional)</FormLabel>
+              <FormLabel className='text-base'>Descripción del perfil (Opcional)</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder='Describe tu personalidad, intereses, hobbies, etc.'
@@ -247,41 +251,35 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
             </FormItem>
           )}
         />
-        <div className='mt-5'>
-          {isEditing ? (
-            <div className='flex justify-between items-center'>
-              <Button className='font-semibold' type='submit' disabled={isLoading}>
-                {isLoading && <LoaderCircle className='animate-spin w-4 h-4' />}
-                {isLoading ? 'Actualizando Datos...' : 'Guardar'}
-              </Button>
-              <Button className='font-semibold' type='button' variant='outline' onClick={() => setIsEditing(!isEditing)}>
-                Cancelar
-              </Button>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant='destructive'>Eliminar Cuenta</Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>¿Estás completamente seguro?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Esta acción eliminará tu cuenta de forma permanente y no podrás recuperarla. Todos tus datos asociados se perderán. Por favor,
-                      confirma si deseas continuar.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDeleteAccount}>Eliminar</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
-          ) : (
-            <Button className='font-semibold' type='button' onClick={() => setIsEditing(!isEditing)}>
-              Editar
+        {isEditing ? (
+          <div className='flex flex-col gap-4 md:flex-row justify-between items-center mt-5'>
+            <AlertDialog>
+              <AlertDialogTrigger asChild className='w-full md:w-max order-3 md:order-1'>
+                <Button variant='destructive'>Eliminar Cuenta</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>¿Estás completamente seguro?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Esta acción eliminará tu cuenta de forma permanente y no podrás recuperarla. Todos tus datos asociados se perderán. Por favor,
+                    confirma si deseas continuar.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleDeleteAccount}>Eliminar</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            <Button className='font-semibold w-full md:w-max order-2' type='button' variant='outline' onClick={() => setIsEditing(!isEditing)}>
+              Cancelar
             </Button>
-          )}
-        </div>
+            <Button className='font-semibold w-full md:w-max order-1 md:order-3' type='submit' disabled={isLoading}>
+              {isLoading && <LoaderCircle className='animate-spin w-4 h-4' />}
+              {isLoading ? 'Actualizando Datos...' : 'Guardar'}
+            </Button>
+          </div>
+        ) : null}
       </form>
     </Form>
   )

@@ -7,8 +7,15 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { updateProfileSchema } from '@/schema/userSchema'
 import { UpdateProfileType } from '@/types'
 import { useLoading } from '../useLoading'
+import { Dispatch, SetStateAction } from 'react'
+import { isEqualReact } from '@react-hookz/deep-equal'
 
-export function useProfileForm({ setIsEditing, isEditing }: any) {
+type authProps = {
+  isEditing: boolean
+  setIsEditing: Dispatch<SetStateAction<boolean>>
+}
+
+export function useProfileForm({ setIsEditing, isEditing }: authProps) {
   const router = useRouter()
   const deleteCookie = useDeleteCookie()
   const profile = useAuthStore(state => state.profile)
@@ -18,24 +25,33 @@ export function useProfileForm({ setIsEditing, isEditing }: any) {
   const { showErrorToast, showSuccessToast } = useToastHandler()
   const { isLoading, startLoading, stopLoading } = useLoading()
 
+  const defaultValues: UpdateProfileType = {
+    firstName: profile?.firstName || '',
+    lastName: profile?.lastName || '',
+    skinColor: profile?.skinColor || undefined,
+    weight: profile?.weight || undefined,
+    height: profile?.height || undefined,
+    bodyDescription: profile?.bodyDescription || undefined,
+    profileDescription: profile?.profileDescription || undefined,
+    birthDate: profile?.birthDate || undefined,
+    genderId: undefined,
+    hairColor: profile?.hairColor || undefined
+  }
+
   const form = useForm<UpdateProfileType>({
     resolver: zodResolver(updateProfileSchema),
-    defaultValues: {
-      firstName: profile?.firstName || undefined,
-      lastName: profile?.lastName || undefined,
-      skinColor: profile?.skinColor || undefined,
-      weight: profile?.weight || undefined,
-      height: profile?.height || undefined,
-      bodyDescription: profile?.bodyDescription || undefined,
-      profileDescription: profile?.profileDescription || undefined,
-      birthDate: profile?.birthDate || undefined,
-      genderId: undefined,
-      hairColor: profile?.hairColor || undefined
-    }
+    defaultValues
   })
 
   async function onSubmit(data: UpdateProfileType) {
     startLoading()
+
+    if (isEqualReact(data, defaultValues)) {
+      showSuccessToast('¡Cambios Guardados!', 'usuario actualizado correctamente')
+      setIsEditing(false)
+      return
+    }
+
     try {
       const profileData = { ...data, genderId: undefined }
       const response = await updateProfile(profileData)
