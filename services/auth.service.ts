@@ -112,6 +112,7 @@ async function deleteUser(endpoint: string): Promise<ApiResponse<null>> {
   }
 }
 
+
 //Obtener Generos
 async function getGenders(endpoint: string): Promise<Gender[]> {
   try {

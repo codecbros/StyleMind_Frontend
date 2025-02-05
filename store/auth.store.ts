@@ -1,6 +1,7 @@
 import { authService } from '@/services/auth.service'
 import { FormLoginType, Gender, LoginResponse, UpdateProfileType, UserProfile } from '@/types'
 import { AxiosError } from 'axios'
+import { profile } from 'console'
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
@@ -84,7 +85,7 @@ export const useAuthStore = create<AuthState>()(
           }
         },
 
-        logout: () => set({ role: null, token: undefined })
+        logout: () => set({ role: null, token: undefined, profile: null })
       }),
       {
         name: 'auth-storage'
