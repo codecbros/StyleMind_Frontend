@@ -13,6 +13,12 @@ export type ApiResponse<T> = {
   statusCode: number
 }
 
+export type FilesType = File & {
+  path: string
+  relativePath: string
+  preview: string
+}
+
 // **Género del usuario**
 export type Gender = {
   id: string

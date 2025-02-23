@@ -1,3 +1,12 @@
+import ContainerLayout from '@/components/ContainerLayout'
+import ImageUploader from '@/components/ImageUpload'
+
 export default function page() {
-  return <div>Nueva Prenda</div>
+  return (
+    <div>
+      <ContainerLayout>
+        <ImageUploader />
+      </ContainerLayout>
+    </div>
+  )
 }
