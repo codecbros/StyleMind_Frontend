@@ -28,7 +28,7 @@ export default function RegisterForm() {
                     <SelectValue placeholder='Selecciona tu género' />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className='hover:border-primary/50 border border-muted-foreground'>
+                <SelectContent>
                   {genders.map(gender => (
                     <SelectItem key={gender.id} value={gender.id}>
                       {gender.name}

@@ -40,12 +40,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
               <FormItem>
                 <FormLabel>Nombres *</FormLabel>
                 <FormControl>
-                  <Input
-                    type='text'
-                    placeholder='Ej: María'
-                    className='hover:border-primary/50 focus:ring-primary/20 border border-muted-foreground'
-                    {...field}
-                  />
+                  <Input type='text' placeholder='Ej: María' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -58,12 +53,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
               <FormItem>
                 <FormLabel>Apellidos *</FormLabel>
                 <FormControl>
-                  <Input
-                    type='text'
-                    placeholder='Ej: García López'
-                    className='hover:border-primary/50 focus:ring-primary/20  border border-muted-foreground'
-                    {...field}
-                  />
+                  <Input type='text' placeholder='Ej: García López' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -114,7 +104,6 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                           const isoDate = date.toISOString()
                           field.onChange(isoDate)
                         }}
-                        className='hover:border-primary/50 focus:ring-prim  ary/20 border border-muted-foreground'
                       />
                     </FormControl>
                     <FormDescription>Tu fecha de nacimiento se usa para calcular tu edad.</FormDescription>
@@ -131,14 +120,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                     <FormItem>
                       <FormLabel>Peso (kg)</FormLabel>
                       <FormControl>
-                        <Input
-                          type='number'
-                          step='0.1'
-                          placeholder='70.5'
-                          min='0'
-                          {...field}
-                          className='hover:border-primary/50 focus:ring-primary/20 border border-muted-foreground'
-                        />
+                        <Input type='number' step='0.1' placeholder='70.5' min='0' {...field} />
                       </FormControl>
                       <FormDescription>Tu peso en kilogramos.</FormDescription>
                       <FormMessage />
@@ -152,14 +134,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                     <FormItem>
                       <FormLabel>Altura (cm)</FormLabel>
                       <FormControl>
-                        <Input
-                          type='number'
-                          step='1'
-                          placeholder='175'
-                          min='0'
-                          {...field}
-                          className='hover:border-primary/50 focus:ring-primary/20 border border-muted-foreground'
-                        />
+                        <Input type='number' step='1' placeholder='175' min='0' {...field} />
                       </FormControl>
                       <FormDescription>Tu altura en centímetros.</FormDescription>
                       <FormMessage />
@@ -198,12 +173,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                     <FormItem>
                       <FormLabel>Color de cabello</FormLabel>
                       <FormControl>
-                        <Input
-                          type='text'
-                          placeholder='Ej: Castaño oscuro, Rubio cenizo, etc.'
-                          {...field}
-                          className='hover:border-primary/50 focus:ring-primary/20 border border-muted-foreground'
-                        />
+                        <Input type='text' placeholder='Ej: Castaño oscuro, Rubio cenizo, etc.' {...field} />
                       </FormControl>
                       <FormDescription>Describe tu color de cabello actual.</FormDescription>
                       <FormMessage />
@@ -218,11 +188,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                   <FormItem>
                     <FormLabel>Descripción del cuerpo</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder='Describe tu tipo de cuerpo, características distintivas, etc.'
-                        className='hover:border-primary/50 focus:ring-primary/20 border border-muted-foreground'
-                        {...field}
-                      />
+                      <Textarea placeholder='Describe tu tipo de cuerpo, características distintivas, etc.' />
                     </FormControl>
                     <FormDescription>Proporciona una breve descripción de tu cuerpo (máximo 350 caracteres).</FormDescription>
                     <FormMessage />
@@ -240,11 +206,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
             <FormItem>
               <FormLabel className='text-base'>Descripción del perfil (Opcional)</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder='Describe tu personalidad, intereses, hobbies, etc.'
-                  className='hover:border-primary/50 focus:ring-primary/20 border border-muted-foreground'
-                  {...field}
-                />
+                <Textarea placeholder='Describe tu personalidad, intereses, hobbies, etc.' {...field} />
               </FormControl>
               <FormDescription>Proporciona una breve descripción de ti mismo (máximo 500 caracteres).</FormDescription>
               <FormMessage />

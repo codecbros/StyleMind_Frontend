@@ -12,10 +12,8 @@ export default function Profile() {
     <>
       <h1 className='text-center text-2xl lg:text-3xl uppercase font-extrabold'>perfil</h1>
       <ContainerLayout>
-        <Card className='p-5 mt-3 w-full shadow-xl'>
-          <h4 className='mb-3 text-lg lg:text-xl font-semibold'>
-            Completa tu perfil: Cuanta más información proporciones, mejores serán las combinaciones
-          </h4>
+        <Card>
+          <h4 className='mb-3 text-lg  font-semibold'>Completa tu perfil: Cuanta más información proporciones, mejores serán las combinaciones</h4>
 
           {isEditing ? (
             <ProfileForm setIsEditing={setIsEditing} isEditing={isEditing} />
