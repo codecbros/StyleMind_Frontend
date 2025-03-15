@@ -8,7 +8,7 @@ export default function login() {
     <>
       <section className='lg:col-span-1 2xl:col-span-3 mx-auto hidden lg:block '>
         <Image
-          src='/RegisterImg.jpg'
+          src='/registerImg.jpg'
           alt='Imagen de fondo para el Login'
           width={3000}
           height={2000}

@@ -9,7 +9,7 @@ export default function register() {
     <>
       <section className='lg:col-span-1 2xl:col-span-3 mx-auto hidden lg:block '>
         <Image
-          src='/RegisterImg.jpg'
+          src='/registerImg.jpg'
           alt='Imagen de fondo para el registro'
           width={3000}
           height={2000}
