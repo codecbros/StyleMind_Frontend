@@ -1,5 +1,5 @@
 import { useAuthStore } from '@/store/auth.store'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 export const useGenders = () => {
   const genders = useAuthStore(state => state.genders)

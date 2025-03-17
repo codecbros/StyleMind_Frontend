@@ -4,17 +4,17 @@ import ContainerLayout from '@/components/ContainerLayout'
 import ImageUploader from '@/components/ImageUpload'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { DropdownMenuRadioGroup } from '@/components/ui/dropdown-menu'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { useCategories } from '@/hooks/useCategories'
 import { wardrobeItemSchema } from '@/schema/newClothingSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Images } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 export default function page() {
+  const { categories } = useCategories()
   const defaultValues = {
     images: [""],
     name: "",
@@ -37,6 +37,7 @@ export default function page() {
   const onSubmit = (data) => { 
     console.log(data)
   }
+
 
   return (
     <>
@@ -81,8 +82,22 @@ export default function page() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Categoria</FormLabel>
-                      <FormControl>
-                        <Input placeholder='Seleccione la categoria correspondiente' {...field} />
+                       <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl className='hover:border-primary/50 border border-muted-foreground'>
+                              <SelectTrigger>
+                                <SelectValue placeholder='Selecciona la categoria' />
+                              </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {categories.map(category => (
+                                  <SelectItem key={category.id} value={category.id}>
+                                    {category.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                              </Select>
+                        <FormControl>
+                      
                       </FormControl>
                       <FormMessage />
                     </FormItem>

@@ -61,3 +61,18 @@ export type ProtectedRoute = {
   path: string
   redirectTo: string
 }
+
+
+// Tipo para cada categoría
+export type Category = {
+  id: string;
+  name: string;
+  description: string | null;
+};
+
+// Tipo para la respuesta completa de la API
+export type CategoriesApiResponse = {
+  statusCode: number;
+  message: string;
+  data: Category[];
+};
