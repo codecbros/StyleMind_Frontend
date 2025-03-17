@@ -2,36 +2,42 @@
 
 import ContainerLayout from '@/components/ContainerLayout'
 import ImageUploader from '@/components/ImageUpload'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { DropdownMenuRadioGroup } from '@/components/ui/dropdown-menu'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
+import { useCategories } from '@/hooks/useCategories'
 import { wardrobeItemSchema } from '@/schema/newClothingSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
 export default function page() {
+  const { categories } = useCategories()
+  
   const defaultValues = {
-    images: [],
-    title: '',
-    category: '',
-    size: '',
-    brand: '',
-    material: '',
-    style: 'casual', // Valor por defecto (puedes cambiarlo según convenga)
-    climate: '',
-    description: '',
-    color: '',
-    purchaseDate: '',
-    condition: 'new', // Valor por defecto para el estado de la prenda
-    notes: ''
-  }
+    images: [""],
+    name: "",
+    description: "",
+    season: "",
+    primaryColor: "",
+    secondaryColor: "",
+    style: "",
+    material: "",
+    size: "",
+    categoryId: ""
+  };
+  
 
   const form = useForm({
     resolver: zodResolver(wardrobeItemSchema),
     defaultValues
   })
+
+  const onSubmit = (data) => { 
+    console.log(data)
+  }
 
   return (
     <>
@@ -40,13 +46,13 @@ export default function page() {
         <Card>
           <h4 className='mb-3 text-lg font-semibold'>Cuanta más información proporciones, mejores serán las combinaciones</h4>
           <Form {...form}>
-            <form className='flex flex-col gap-10'>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-10'>
               <FormField
                 control={form.control}
                 name='images'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Selecciona las imagenes de tu prenda</FormLabel>
+                    <FormLabel className='text-base'>Selecciona las imagenes de tu prenda</FormLabel>
                     <FormControl>
                       <ImageUploader />
                     </FormControl>
@@ -58,12 +64,12 @@ export default function page() {
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
-                  name='title'
+                  name='name'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Title</FormLabel>
+                      <FormLabel>Nombre de prenda</FormLabel>
                       <FormControl>
-                        <Input placeholder='Enter title' {...field} />
+                        <Input placeholder='Camiseta basica' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -72,12 +78,26 @@ export default function page() {
 
                 <FormField
                   control={form.control}
-                  name='category'
+                  name='categoryId'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Category</FormLabel>
-                      <FormControl>
-                        <Input placeholder='Enter category' {...field} />
+                      <FormLabel>Categoria</FormLabel>
+                       <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl className='hover:border-primary/50 border border-muted-foreground'>
+                              <SelectTrigger>
+                                <SelectValue placeholder='Selecciona la categoria' />
+                              </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {categories.map(category => (
+                                  <SelectItem key={category.id} value={category.id}>
+                                    {category.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                              </Select>
+                        <FormControl>
+                      
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -89,9 +109,9 @@ export default function page() {
                   name='size'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Size</FormLabel>
+                      <FormLabel>Talla</FormLabel>
                       <FormControl>
-                        <Input placeholder='Enter size' {...field} />
+                        <Input placeholder='Ej: S, M, L, XL' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -100,12 +120,12 @@ export default function page() {
 
                 <FormField
                   control={form.control}
-                  name='brand'
+                  name='season'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Brand</FormLabel>
+                      <FormLabel>Temporada</FormLabel>
                       <FormControl>
-                        <Input placeholder='Enter brand' {...field} />
+                        <Input placeholder='Ej: Verano (elige la temporada considerando el material)' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -119,7 +139,7 @@ export default function page() {
                     <FormItem>
                       <FormLabel>Material</FormLabel>
                       <FormControl>
-                        <Input placeholder='Enter material' {...field} />
+                        <Input placeholder='Ej: Algodón, Poliéster, Cuero' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -131,11 +151,11 @@ export default function page() {
                   name='style'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Style</FormLabel>
+                      <FormLabel>Estilo</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl className='hover:border-primary/50 border border-muted-foreground'>
                           <SelectTrigger>
-                            <SelectValue placeholder='Select a style' />
+                            <SelectValue placeholder='Seleccione el estilo de la prenda' />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -152,12 +172,12 @@ export default function page() {
 
                 <FormField
                   control={form.control}
-                  name='climate'
+                  name='primaryColor'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Climate</FormLabel>
+                      <FormLabel>Color Principal</FormLabel>
                       <FormControl>
-                        <Input placeholder='Enter climate' {...field} />
+                        <Input placeholder='Color principal de la prenda' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -166,18 +186,35 @@ export default function page() {
 
                 <FormField
                   control={form.control}
-                  name='color'
+                  name='secondaryColor'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Color</FormLabel>
+                      <FormLabel>Color Secundario (opcional)</FormLabel>
                       <FormControl>
-                        <Input placeholder='Enter color' {...field} />
+                        <Input placeholder='Color secundario' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
               </div>
+                <FormField
+                  control={form.control}
+                  name='description'
+                  render={({ field }) => (
+                    <FormItem className='-mt-4'>
+                      <FormLabel className=''>Descripción de la prenda (Opcional)</FormLabel>
+                      <FormControl>
+                        <Textarea placeholder='Ej: Camiseta de algodón color blanco, ideal para verano' {...field} />
+                      </FormControl>
+                      <FormDescription>Proporciona una descripcion sobre la prenda (máximo 500 caracteres).</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button className='font-semibold w-full md:w-max order-1 md:order-3' type='submit'> Guardar Prenda </Button>
             </form>
           </Form>
         </Card>
