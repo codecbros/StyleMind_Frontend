@@ -1,19 +1,17 @@
-import { useClothingStore } from '@/store/clothing.store'
-import { useEffect } from 'react'
+import { useClothingStore } from "@/store/clothing.store"
+import { useEffect, useState } from "react"
 
 export const useCategories = () => {
   const categories = useClothingStore(state => state.categories)
-  const getCategories = useClothingStore(state => state.getClothing)
+  const getCategories = useClothingStore(state => state.getCategories)
+  const [hasAttemptedFetch, setHasAttemptedFetch] = useState(false)
 
   useEffect(() => {
-
-    const fetchCategories = () => {
-      if (categories.length > 0) return
-
+    if (!hasAttemptedFetch && categories.length === 0) {
       getCategories()
+      setHasAttemptedFetch(true)
     }
-    fetchCategories()
-  }, [categories, getCategories])
-
+  }, [getCategories, hasAttemptedFetch])
+  
   return { categories }
 }

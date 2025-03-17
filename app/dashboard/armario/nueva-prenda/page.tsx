@@ -15,6 +15,7 @@ import { useForm } from 'react-hook-form'
 
 export default function page() {
   const { categories } = useCategories()
+  
   const defaultValues = {
     images: [""],
     name: "",
@@ -37,7 +38,6 @@ export default function page() {
   const onSubmit = (data) => { 
     console.log(data)
   }
-
 
   return (
     <>

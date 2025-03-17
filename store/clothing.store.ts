@@ -6,7 +6,7 @@ import { devtools, persist } from 'zustand/middleware'
 
 export type ClothingState = {
   categories: Category[]
-  getClothing: () => void
+  getCategories: () => void
 }
 
 export const useClothingStore = create<ClothingState>()(
@@ -15,7 +15,7 @@ export const useClothingStore = create<ClothingState>()(
       set => ({
         categories: [],
 
-        getClothing: async () => {
+        getCategories: async () => {
           try {
             const {data} = await clothingService.getCategories()
             set({ categories: data })
