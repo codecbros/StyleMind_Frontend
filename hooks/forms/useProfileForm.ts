@@ -8,7 +8,7 @@ import { updateProfileSchema } from '@/schema/userSchema'
 import { UpdateProfileType } from '@/types'
 import { useLoading } from '../useLoading'
 import { Dispatch, SetStateAction } from 'react'
-import { isEqualReact } from '@react-hookz/deep-equal'
+import { isEqual } from '@react-hookz/deep-equal'
 
 type authProps = {
   isEditing: boolean
@@ -46,7 +46,7 @@ export function useProfileForm({ setIsEditing, isEditing }: authProps) {
   async function onSubmit(data: UpdateProfileType) {
     startLoading()
 
-    if (isEqualReact(data, defaultValues)) {
+    if (isEqual(data, defaultValues)) {
       showSuccessToast('¡Cambios Guardados!', 'usuario actualizado correctamente')
       setIsEditing(false)
       return
