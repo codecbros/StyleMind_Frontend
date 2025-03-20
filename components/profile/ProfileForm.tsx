@@ -97,12 +97,12 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                       <Input
                         type='date'
                         max={new Date().toISOString().split('T')[0]}
-                        value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                        value={field.value ? field.value.split("T")[0] : ''}//new Date(field.value).toISOString().split('T')[0] : ''}
                         onChange={e => {
                           const date = new Date(e.target.value)
                           // Convertimos a formato ISO
-                          const isoDate = date.toISOString()
-                          field.onChange(isoDate)
+                          //const isoDate = date.toISOString()                       
+                          field.onChange(date.toISOString())
                         }}
                       />
                     </FormControl>
@@ -188,7 +188,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                   <FormItem>
                     <FormLabel>Descripción del cuerpo</FormLabel>
                     <FormControl>
-                      <Textarea placeholder='Describe tu tipo de cuerpo, características distintivas, etc.' {...field} />
+                      <Textarea placeholder='Describe tu tipo de cuerpo, características distintivas, etc.' {...field}/>
                     </FormControl>
                     <FormDescription>Proporciona una breve descripción de tu cuerpo (máximo 350 caracteres).</FormDescription>
                     <FormMessage />
