@@ -45,10 +45,10 @@ export default function ProfileView({ setIsEditing, isEditing }: authProps) {
         </div>
       </section>
       <section className='space-y-2'>
-        <h4 className='text-lg font-semibold'>Descripción del perfil</h4>
+        <h4 className='text-lg font-semibold'>Descripción del perfil </h4>
         <div className='grid grid-cols-1'>
           <textarea disabled className='text-sm text-primary/60 p-2'
-            value={user?.profileDescription || 'No especificado'}
+             value={user?.profileDescription || 'No especificado'}
           />
         </div>
       </section>
