@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
 export const wardrobeItemSchema = z.object({
   // Imágenes de la prenda (mínimo 1 y máximo 4)
@@ -7,25 +7,25 @@ export const wardrobeItemSchema = z.object({
       z.object({
         path: z.string(),
         relativePath: z.string(),
-        preview: z.string()
+        preview: z.string(),
       })
     )
-    .min(1, { message: 'At least one image is required' })
-    .max(4, { message: 'A maximum of 4 images are allowed' }),
+    .min(1, { message: 'Se requiere al menos una imagen' })
+    .max(4, { message: 'Se permite un máximo de 4 imágenes' }),
 
-  // Información básica de la prenda
-  title: z.string().min(3, { message: 'Title must be at least 3 characters' }).max(100),
-  category: z.string().nonempty({ message: 'Category is required' }), // Ej: tops, bottoms, outerwear, etc.
-  size: z.string().nonempty({ message: 'Size is required' }),
-  brand: z.string().optional(), // Opcional, ya que no todas las prendas tienen marca conocida
-  material: z.string().optional(),
-  style: z.enum(['casual', 'formal', 'sporty', 'bohemian', 'vintage', 'modern']).or(z.string().nonempty({ message: 'Style is required' })),
-  climate: z.string().optional(), // Por ejemplo: summer, winter, etc.
-  description: z.string().optional(),
+  // Información de la prenda
+  name: z
+    .string()
+    .min(3, { message: 'El nombre debe tener al menos 3 caracteres' })
+    .max(100, { message: 'El nombre no puede exceder 100 caracteres' }),
+  description: z.string().nonempty({ message: 'La descripción es obligatoria' }),
+  season: z.string().nonempty({ message: 'La temporada es obligatoria' }),
+  primaryColor: z.string().nonempty({ message: 'El color principal es obligatorio' }),
+  secondaryColor: z.string().optional(), // Opcional
+  style: z.string().nonempty({ message: 'El estilo es obligatorio' }),
+  material: z.string().optional(), // Opcional
+  size: z.string().nonempty({ message: 'La talla es obligatoria' }),
 
-  // Opciones adicionales para enriquecer la información personal:
-  color: z.string().optional(), // Color principal de la prenda
-  purchaseDate: z.string().optional(), // Fecha de compra (podrías transformarla a Date en otro paso)
-  condition: z.enum(['new', 'good', 'worn', 'needs repair']).optional(), // Estado de la prenda
-  notes: z.string().optional() // Notas personales, por ejemplo, cuándo se usó por última vez o ideas para combinarla
-})
+  // Categoría (solo se puede seleccionar una)
+  categoryId: z.string().nonempty({ message: 'Debe seleccionarse una categoría' }),
+});

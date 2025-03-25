@@ -186,7 +186,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                   <FormItem>
                     <FormLabel>Descripción del cuerpo</FormLabel>
                     <FormControl>
-                      <Textarea placeholder='Describe tu tipo de cuerpo, características distintivas, etc.' {...field}/>
+                      <Textarea placeholder='Describe tu tipo de cuerpo, características distintivas, etc.' {...field} />
                     </FormControl>
                     <FormDescription>Proporciona una breve descripción de tu cuerpo (máximo 350 caracteres).</FormDescription>
                     <FormMessage />
