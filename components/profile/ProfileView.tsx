@@ -24,9 +24,9 @@ export default function ProfileView({ setIsEditing, isEditing }: authProps) {
       <section className='space-y-4'>
         <h4 className='text-lg font-semibold'>información Personal</h4>
         <div className='grid grid-cols-2 gap-4'>
-          <ProfileField label='Peso (kg)' value={user?.weight} />
+          <ProfileField label='Peso (lb)' value={user?.weight} />
           <ProfileField label='Altura (cm)' value={user?.height} />
-          <ProfileField label='Fecha de Nacimiento' value={user?.birthDate} />
+          <ProfileField label='Fecha de Nacimiento' value={user?.birthDate ? user.birthDate.split("T")[0] : ""} />          
         </div>
       </section>
       <section className='space-y-4'>
