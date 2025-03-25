@@ -50,8 +50,8 @@ const loginSchema = z.object({
     .regex(/\d/, {
       message: 'La contraseña debe incluir al menos un número.'
     })
-    .regex(/[@$!%*?&]/, {
-      message: 'La contraseña debe incluir al menos un símbolo especial (@, $, !, %, *, ?, &).'
+    .regex(/[!@#$%^&*(),.?":{}|<>_\-]/, {
+      message: 'La contraseña debe incluir al menos un símbolo especial. '
     })
 })
 
@@ -71,8 +71,8 @@ const registerSchema = baseUserSchema.extend({
     .regex(/\d/, {
       message: 'La contraseña debe incluir al menos un número.'
     })
-    .regex(/[@$!%*?&]/, {
-      message: 'La contraseña debe incluir al menos un símbolo especial (@, $, !, %, *, ?, &).'
+    .regex(/[!@#$%^&*(),.?":{}|<>_\-]/, {
+      message: 'La contraseña debe incluir al menos un símbolo especial.'
     })
 })
 
