@@ -97,12 +97,10 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                       <Input
                         type='date'
                         max={new Date().toISOString().split('T')[0]}
-                        value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                        value={field.value ? field.value.split("T")[0] : ''}
                         onChange={e => {
-                          const date = new Date(e.target.value)
-                          // Convertimos a formato ISO
-                          const isoDate = date.toISOString()
-                          field.onChange(isoDate)
+                          const date = new Date(e.target.value)                                
+                          field.onChange(date.toISOString())                          
                         }}
                       />
                     </FormControl>
@@ -118,11 +116,11 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                   name='weight'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Peso (kg)</FormLabel>
+                      <FormLabel>Peso (lb)</FormLabel>
                       <FormControl>
                         <Input type='number' step='0.1' placeholder='70.5' min='0' {...field} />
                       </FormControl>
-                      <FormDescription>Tu peso en kilogramos.</FormDescription>
+                      <FormDescription>Tu peso en Libras.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
