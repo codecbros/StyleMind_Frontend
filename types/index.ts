@@ -62,17 +62,28 @@ export type ProtectedRoute = {
   redirectTo: string
 }
 
-
 // Tipo para cada categoría
 export type Category = {
-  id: string;
-  name: string;
-  description: string | null;
-};
+  id: string
+  name: string
+  description: string | null
+}
 
 // Tipo para la respuesta completa de la API
 export type CategoriesApiResponse = {
-  statusCode: number;
-  message: string;
-  data: Category[];
-};
+  statusCode: number
+  message: string
+  data: Category[]
+}
+
+export type ClothingItem = {
+  name: string
+  description: string
+  season: string
+  primaryColor: string
+  secondaryColor: string
+  style: string
+  material: string
+  size: string
+  categoriesId: string[]
+}

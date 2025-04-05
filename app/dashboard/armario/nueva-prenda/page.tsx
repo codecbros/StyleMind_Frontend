@@ -10,33 +10,34 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { useCategories } from '@/hooks/useCategories'
 import { wardrobeItemSchema } from '@/schema/newClothingSchema'
+import { postClothing } from '@/services/clothing.service'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
 export default function page() {
   const { categories } = useCategories()
-  
+
   const defaultValues = {
-    images: [""],
-    name: "",
-    description: "",
-    season: "",
-    primaryColor: "",
-    secondaryColor: "",
-    style: "",
-    material: "",
-    size: "",
-    categoryId: ""
-  };
-  
+    name: '',
+    description: '',
+    season: '',
+    primaryColor: '',
+    secondaryColor: '',
+    style: '',
+    material: '',
+    size: '',
+    categoriesId: []
+  }
 
   const form = useForm({
     resolver: zodResolver(wardrobeItemSchema),
     defaultValues
   })
 
-  const onSubmit = (data) => { 
-    console.log(data)
+  const onSubmit = data => {
+    const response = postClothing(data)
+    console.log('response', response)
+    // Aquí puedes manejar el envío de datos a tu API o servicio
   }
 
   return (
@@ -47,9 +48,8 @@ export default function page() {
           <h4 className='mb-3 text-lg font-semibold'>Cuanta más información proporciones, mejores serán las combinaciones</h4>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-10'>
-              <FormField
+              {/* <FormField
                 control={form.control}
-                name='images'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-base'>Selecciona las imagenes de tu prenda</FormLabel>
@@ -59,7 +59,7 @@ export default function page() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <FormField
@@ -78,27 +78,25 @@ export default function page() {
 
                 <FormField
                   control={form.control}
-                  name='categoryId'
+                  name='categoriesId'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Categoria</FormLabel>
-                       <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl className='hover:border-primary/50 border border-muted-foreground'>
-                              <SelectTrigger>
-                                <SelectValue placeholder='Selecciona la categoria' />
-                              </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {categories.map(category => (
-                                  <SelectItem key={category.id} value={category.id}>
-                                    {category.name}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                              </Select>
-                        <FormControl>
-                      
-                      </FormControl>
+                      <FormLabel>Categorias</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value?.[0] || ''}>
+                        <FormControl className='hover:border-primary/50 border border-muted-foreground'>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Selecciona las categorias' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {categories.map(category => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormControl></FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -197,24 +195,26 @@ export default function page() {
                     </FormItem>
                   )}
                 />
-
               </div>
-                <FormField
-                  control={form.control}
-                  name='description'
-                  render={({ field }) => (
-                    <FormItem className='-mt-4'>
-                      <FormLabel className=''>Descripción de la prenda (Opcional)</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder='Ej: Camiseta de algodón color blanco, ideal para verano' {...field} />
-                      </FormControl>
-                      <FormDescription>Proporciona una descripcion sobre la prenda (máximo 500 caracteres).</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name='description'
+                render={({ field }) => (
+                  <FormItem className='-mt-4'>
+                    <FormLabel className=''>Descripción de la prenda (Opcional)</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder='Ej: Camiseta de algodón color blanco, ideal para verano' {...field} />
+                    </FormControl>
+                    <FormDescription>Proporciona una descripcion sobre la prenda (máximo 500 caracteres).</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <Button className='font-semibold w-full md:w-max order-1 md:order-3' type='submit'> Guardar Prenda </Button>
+              <Button className='font-semibold w-full md:w-max order-1 md:order-3' type='submit'>
+                {' '}
+                Guardar Prenda{' '}
+              </Button>
             </form>
           </Form>
         </Card>
