@@ -88,7 +88,7 @@ export default function page() {
                             }}
                             value={field.value.map(value => ({
                               value,
-                              label: categories.find(category => category.id === value)?.name || ['']
+                              label: categories.find(category => category.id === value)?.name || ''
                             }))}
                             placeholder='Selecciona las categorias'
                           />
