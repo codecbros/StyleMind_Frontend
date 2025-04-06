@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { loginSchema, registerSchema, updateProfileSchema } from '@/schema/userSchema'
+import { wardrobeItemSchema } from '@/schema/newClothingSchema'
 
 // **Inferencia de Zod Schemas**
 export type FormLoginType = z.infer<typeof loginSchema>
@@ -62,17 +63,29 @@ export type ProtectedRoute = {
   redirectTo: string
 }
 
-
 // Tipo para cada categoría
 export type Category = {
-  id: string;
-  name: string;
-  description: string | null;
-};
+  id: string
+  name: string
+  description: string | null
+}
 
 // Tipo para la respuesta completa de la API
 export type CategoriesApiResponse = {
-  statusCode: number;
-  message: string;
-  data: Category[];
-};
+  statusCode: number
+  message: string
+  data: Category[]
+}
+
+export type ClothingItem = {
+  name: string
+  description: string
+  season: string
+  primaryColor: string
+  secondaryColor?: string | undefined
+  style: string
+  material?: string | undefined
+  size: string
+  categoriesId: string[]
+}
+export type ClothingItemResponse = z.infer<typeof wardrobeItemSchema>

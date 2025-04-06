@@ -2,6 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
+.react-select{
+  .css-13cymwt-control{
+    background-color: inherit;
+    padding: 0.05rem 0;
+    --tw-ring-offset-color: hsl(var(--background));
+    border-color: hsl(var(--muted-foreground));
+    border-radius: calc(var(--radius) - 2px);
+  }
+  .css-19bb58m{
+    padding: 0px;
+  }
+  .css-1nmdiq5-menu{
+    background-color: hsl(var(--background));
+    border-color: hsl(var(--muted-foreground));
+    border-radius: calc(var(--radius) - 2px);
+  }
+
+  .css-t3ipsp-control{
+    background-color: hsl(var(--background));
+    border-color: hsl(var(--muted-foreground));
+    box-shadow: 0 0 0 1px hsl(var(--muted-foreground));
+  }
+  .css-t3ipsp-control:hover{
+    border-color: hsl(var(--muted-foreground));
+    box-shadow: 0 0 0 1px hsl(var(--muted-foreground));
+  }
+  .css-qr46ko{
+    border: hsl(var(--muted-foreground)), solid, 1px;
+    border-radius: calc(var(--radius) - 2px);;
+  }
+  .css-qr46ko > *{
+    background-color: transparent;
+    cursor: pointer;
+  }
+  .css-qr46ko *:hover{
+    background-color: hsl(var(--accent));
+    
+  }
+}
 
 body {
   font-family: var(--font-roboto);

@@ -1,42 +1,50 @@
 'use client'
-
 import ContainerLayout from '@/components/ContainerLayout'
-import ImageUploader from '@/components/ImageUpload'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useCategories } from '@/hooks/useCategories'
+import { useToastHandler } from '@/hooks/useToastHandler'
 import { wardrobeItemSchema } from '@/schema/newClothingSchema'
+import { postClothing } from '@/services/clothing.service'
+import { ClothingItemResponse } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import Select from 'react-select'
 
 export default function page() {
+  const { showSuccessToast, showErrorToast } = useToastHandler()
   const { categories } = useCategories()
-  
+
   const defaultValues = {
-    images: [""],
-    name: "",
-    description: "",
-    season: "",
-    primaryColor: "",
-    secondaryColor: "",
-    style: "",
-    material: "",
-    size: "",
-    categoryId: ""
-  };
-  
+    name: '',
+    description: '',
+    season: '',
+    primaryColor: '',
+    secondaryColor: '',
+    style: '',
+    material: '',
+    size: '',
+    categoriesId: [] as string[]
+  }
 
   const form = useForm({
     resolver: zodResolver(wardrobeItemSchema),
     defaultValues
   })
 
-  const onSubmit = (data) => { 
-    console.log(data)
+  const onSubmit = async (data: ClothingItemResponse) => {
+    try {
+      const response = await postClothing(data)
+      showSuccessToast('¡Prenda Guardada!', response.message)
+      form.reset()
+    } catch (error) {
+      showErrorToast(`Error al guardar la prenda
+        Por favor, revisa los datos ingresados`)
+      console.log(error)
+    }
   }
 
   return (
@@ -46,21 +54,7 @@ export default function page() {
         <Card>
           <h4 className='mb-3 text-lg font-semibold'>Cuanta más información proporciones, mejores serán las combinaciones</h4>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-10'>
-              <FormField
-                control={form.control}
-                name='images'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className='text-base'>Selecciona las imagenes de tu prenda</FormLabel>
-                    <FormControl>
-                      <ImageUploader />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
+            <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-8'>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
@@ -68,9 +62,7 @@ export default function page() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Nombre de prenda</FormLabel>
-                      <FormControl>
-                        <Input placeholder='Camiseta basica' {...field} />
-                      </FormControl>
+                      <FormControl>{field && <Input placeholder='Camiseta basica' {...field} />}</FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -78,27 +70,31 @@ export default function page() {
 
                 <FormField
                   control={form.control}
-                  name='categoryId'
+                  name='categoriesId'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Categoria</FormLabel>
-                       <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl className='hover:border-primary/50 border border-muted-foreground'>
-                              <SelectTrigger>
-                                <SelectValue placeholder='Selecciona la categoria' />
-                              </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {categories.map(category => (
-                                  <SelectItem key={category.id} value={category.id}>
-                                    {category.name}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                              </Select>
-                        <FormControl>
-                      
+                      <FormLabel>Categorias</FormLabel>
+                      <FormControl>
+                        {field && (
+                          <Select
+                            className='react-select'
+                            isMulti
+                            options={categories.map(category => ({
+                              value: category.id,
+                              label: category.name
+                            }))}
+                            onChange={selectedOptions => {
+                              field.onChange(selectedOptions.map(option => option.value))
+                            }}
+                            value={field.value.map(value => ({
+                              value,
+                              label: categories.find(category => category.id === value)?.name || ''
+                            }))}
+                            placeholder='Selecciona las categorias'
+                          />
+                        )}
                       </FormControl>
+
                       <FormMessage />
                     </FormItem>
                   )}
@@ -152,19 +148,9 @@ export default function page() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Estilo</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl className='hover:border-primary/50 border border-muted-foreground'>
-                          <SelectTrigger>
-                            <SelectValue placeholder='Seleccione el estilo de la prenda' />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value='casual'>Casual</SelectItem>
-                          <SelectItem value='formal'>Formal</SelectItem>
-                          <SelectItem value='sporty'>Sporty</SelectItem>
-                          <SelectItem value='other'>Other</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <FormControl>
+                        <Input placeholder='Ej: Casual, Formal, Sporty' {...field} />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -197,24 +183,26 @@ export default function page() {
                     </FormItem>
                   )}
                 />
-
               </div>
-                <FormField
-                  control={form.control}
-                  name='description'
-                  render={({ field }) => (
-                    <FormItem className='-mt-4'>
-                      <FormLabel className=''>Descripción de la prenda (Opcional)</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder='Ej: Camiseta de algodón color blanco, ideal para verano' {...field} />
-                      </FormControl>
-                      <FormDescription>Proporciona una descripcion sobre la prenda (máximo 500 caracteres).</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name='description'
+                render={({ field }) => (
+                  <FormItem className='-mt-4'>
+                    <FormLabel className=''>Descripción de la prenda</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder='Ej: Camiseta de algodón color blanco, ideal para verano' {...field} />
+                    </FormControl>
+                    <FormDescription>Proporciona una descripcion sobre la prenda (máximo 1000 caracteres).</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <Button className='font-semibold w-full md:w-max order-1 md:order-3' type='submit'> Guardar Prenda </Button>
+              <Button className='font-semibold w-full md:w-max order-1 md:order-3' type='submit'>
+                {' '}
+                Guardar Prenda{' '}
+              </Button>
             </form>
           </Form>
         </Card>
