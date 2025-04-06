@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { axiosInstance } from './config'
-import { CategoriesApiResponse, ClothingItem } from '@/types'
+import { ApiResponse, CategoriesApiResponse, ClothingItem } from '@/types'
 import { useAuthStore } from '@/store/auth.store'
 
 // Obtener Categorías
@@ -21,15 +21,14 @@ export async function getCategories(): Promise<CategoriesApiResponse> {
   }
 }
 
-export async function postClothing(data: ClothingItem): Promise<ClothingItem> {
+export async function postClothing(data: ClothingItem): Promise<ApiResponse<object>> {
   try {
-    const { data: response }: AxiosResponse<ClothingItem> = await axiosInstance.post('/wardrobe/add-clothes', data, {
+    const { data: response }: AxiosResponse<ApiResponse<object>> = await axiosInstance.post('/wardrobe/add-clothes', data, {
       headers: {
         Authorization: `Bearer ${useAuthStore.getState().token}`
       }
     })
 
-    console.log(response)
     return response
   } catch (error) {
     if (axios.isAxiosError(error)) {

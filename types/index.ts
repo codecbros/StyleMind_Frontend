@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { loginSchema, registerSchema, updateProfileSchema } from '@/schema/userSchema'
+import { wardrobeItemSchema } from '@/schema/newClothingSchema'
 
 // **Inferencia de Zod Schemas**
 export type FormLoginType = z.infer<typeof loginSchema>
@@ -81,9 +82,10 @@ export type ClothingItem = {
   description: string
   season: string
   primaryColor: string
-  secondaryColor: string
+  secondaryColor?: string | undefined
   style: string
-  material: string
+  material?: string | undefined
   size: string
   categoriesId: string[]
 }
+export type ClothingItemResponse = z.infer<typeof wardrobeItemSchema>
