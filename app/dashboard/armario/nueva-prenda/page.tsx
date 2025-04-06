@@ -1,5 +1,4 @@
 'use client'
-
 import ContainerLayout from '@/components/ContainerLayout'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -41,8 +40,6 @@ export default function page() {
     } catch (error) {
       console.log(error)
     }
-
-    // Aquí puedes manejar el envío de datos a tu API o servicio
   }
 
   return (
@@ -52,7 +49,7 @@ export default function page() {
         <Card>
           <h4 className='mb-3 text-lg font-semibold'>Cuanta más información proporciones, mejores serán las combinaciones</h4>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-10'>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-8'>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
@@ -60,9 +57,7 @@ export default function page() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Nombre de prenda</FormLabel>
-                      <FormControl>
-                        <Input placeholder='Camiseta basica' {...field} />
-                      </FormControl>
+                      <FormControl>{field && <Input placeholder='Camiseta basica' {...field} />}</FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -74,22 +69,27 @@ export default function page() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Categorias</FormLabel>
-                      <Select
-                        className='react-select'
-                        isMulti
-                        options={categories.map(category => ({
-                          value: category.id,
-                          label: category.name
-                        }))}
-                        onChange={selectedOptions => {
-                          field.onChange(selectedOptions.map(option => option.value))
-                        }}
-                        value={field.value.map(value => ({
-                          value,
-                          label: categories.find(category => category.id === value)?.name || ''
-                        }))}
-                        placeholder='Selecciona las categorias'
-                      />
+                      <FormControl>
+                        {field && (
+                          <Select
+                            className='react-select'
+                            isMulti
+                            options={categories.map(category => ({
+                              value: category.id,
+                              label: category.name
+                            }))}
+                            onChange={selectedOptions => {
+                              field.onChange(selectedOptions.map(option => option.value))
+                            }}
+                            value={field.value.map(value => ({
+                              value,
+                              label: categories.find(category => category.id === value)?.name || ['']
+                            }))}
+                            placeholder='Selecciona las categorias'
+                          />
+                        )}
+                      </FormControl>
+
                       <FormMessage />
                     </FormItem>
                   )}
