@@ -6,6 +6,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useCategories } from '@/hooks/useCategories'
+import { useToastHandler } from '@/hooks/useToastHandler'
 import { wardrobeItemSchema } from '@/schema/newClothingSchema'
 import { postClothing } from '@/services/clothing.service'
 import { ClothingItemResponse } from '@/types'
@@ -14,6 +15,7 @@ import { useForm } from 'react-hook-form'
 import Select from 'react-select'
 
 export default function page() {
+  const { showSuccessToast, showErrorToast } = useToastHandler()
   const { categories } = useCategories()
 
   const defaultValues = {
@@ -35,9 +37,12 @@ export default function page() {
 
   const onSubmit = async (data: ClothingItemResponse) => {
     try {
-      await postClothing(data)
+      const response = await postClothing(data)
+      showSuccessToast('¡Prenda Guardada!', response.message)
       form.reset()
     } catch (error) {
+      showErrorToast(`Error al guardar la prenda
+        Por favor, revisa los datos ingresados`)
       console.log(error)
     }
   }
