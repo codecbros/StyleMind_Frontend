@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
 
-export default function page() {
+export default function Page() {
   const { showSuccessToast, showErrorToast } = useToastHandler()
   const { categories } = useCategories()
 

@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { VariantProps, cva } from 'class-variance-authority'
-import { Menu, MenuIcon, PanelLeft } from 'lucide-react'
+import { Menu, PanelLeft } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -23,18 +23,19 @@ const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
 
 type SidebarContext = {
   state: 'expanded' | 'collapsed'
-  open: boolean
-  setOpen: (open: boolean) => void
+  // eslint-disable-next-line no-unused-vars
+  setOpen: (value: boolean | ((open: boolean) => boolean)) => void
   openMobile: boolean
+  // eslint-disable-next-line no-unused-vars
   setOpenMobile: (open: boolean) => void
   isMobile: boolean
   toggleSidebar: () => void
 }
 
-const SidebarContext = React.createContext<SidebarContext | null>(null)
+const SidebarCtx = React.createContext<SidebarContext | null>(null)
 
 function useSidebar() {
-  const context = React.useContext(SidebarContext)
+  const context = React.useContext(SidebarCtx)
   if (!context) {
     throw new Error('useSidebar must be used within a SidebarProvider.')
   }
@@ -46,15 +47,14 @@ const SidebarProvider = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<'div'> & {
     defaultOpen?: boolean
-    open?: boolean
+    // eslint-disable-next-line no-unused-vars
     onOpenChange?: (open: boolean) => void
   }
 >(
   (
     {
       defaultOpen = true,
-      open: openProp,
-      onOpenChange: setOpenProp,
+      onOpenChange,
       className,
       style,
       children,
@@ -68,25 +68,28 @@ const SidebarProvider = React.forwardRef<
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
     const [_open, _setOpen] = React.useState(defaultOpen)
-    const open = openProp ?? _open
+    const isOpen = _open
     const setOpen = React.useCallback(
-      (value: boolean | ((value: boolean) => boolean)) => {
-        const openState = typeof value === 'function' ? value(open) : value
-        if (setOpenProp) {
-          setOpenProp(openState)
-        } else {
-          _setOpen(openState)
-        }
+      // eslint-disable-next-line no-unused-vars
+      (value: boolean | ((open: boolean) => boolean)) => {
+        const nextState = typeof value === 'function' ? value(isOpen) : value;
 
+      // value is used to set nextState.
+      if (onOpenChange) {
+        onOpenChange(nextState);
+      } else {
+        _setOpen(nextState);
+      }
+      
         // This sets the cookie to keep the sidebar state.
-        document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+        document.cookie = `${SIDEBAR_COOKIE_NAME}=${nextState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
       },
-      [setOpenProp, open]
+      [onOpenChange, isOpen]
     )
 
     // Helper to toggle the sidebar.
     const toggleSidebar = React.useCallback(() => {
-      return isMobile ? setOpenMobile(open => !open) : setOpen(open => !open)
+      return isMobile ? setOpenMobile(_open => !_open) : setOpen(_open => !_open)
     }, [isMobile, setOpen, setOpenMobile])
 
     // Adds a keyboard shortcut to toggle the sidebar.
@@ -104,23 +107,22 @@ const SidebarProvider = React.forwardRef<
 
     // We add a state so that we can do data-state="expanded" or "collapsed".
     // This makes it easier to style the sidebar with Tailwind classes.
-    const state = open ? 'expanded' : 'collapsed'
+    const state = isOpen ? 'expanded' : 'collapsed'
 
     const contextValue = React.useMemo<SidebarContext>(
       () => ({
         state,
-        open,
         setOpen,
         isMobile,
         openMobile,
         setOpenMobile,
         toggleSidebar
       }),
-      [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+      [state, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
     )
 
     return (
-      <SidebarContext.Provider value={contextValue}>
+      <SidebarCtx.Provider value={contextValue}>
         <TooltipProvider delayDuration={0}>
           <div
             style={
@@ -140,7 +142,7 @@ const SidebarProvider = React.forwardRef<
             {children}
           </div>
         </TooltipProvider>
-      </SidebarContext.Provider>
+      </SidebarCtx.Provider>
     )
   }
 )

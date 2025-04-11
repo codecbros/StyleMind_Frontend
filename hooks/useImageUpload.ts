@@ -74,6 +74,6 @@ export default function useImageUpload() {
     getRootProps,
     isDragActive,
     files,
-    removeFile
+    removeFile,
   }
 }
