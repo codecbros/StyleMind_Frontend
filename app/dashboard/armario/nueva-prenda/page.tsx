@@ -12,12 +12,20 @@ import { useCategories } from '@/hooks/useCategories'
 import { wardrobeItemSchema } from '@/schema/newClothingSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-export default function page() {
+type WardrobeItemFormValues = z.infer<typeof wardrobeItemSchema>
+
+
+export default function Page() {
   const { categories } = useCategories()
   
-  const defaultValues = {
-    images: [""],
+  const defaultValues: WardrobeItemFormValues = {
+    images: [{
+      path: '',
+      relativePath: '',
+      preview: ''
+    }],
     name: "",
     description: "",
     season: "",
@@ -30,12 +38,12 @@ export default function page() {
   };
   
 
-  const form = useForm({
+  const form = useForm<WardrobeItemFormValues>({
     resolver: zodResolver(wardrobeItemSchema),
     defaultValues
   })
 
-  const onSubmit = (data) => { 
+  const onSubmit = (data: WardrobeItemFormValues) => { 
     console.log(data)
   }
 
@@ -50,7 +58,7 @@ export default function page() {
               <FormField
                 control={form.control}
                 name='images'
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel className='text-base'>Selecciona las imagenes de tu prenda</FormLabel>
                     <FormControl>
@@ -96,9 +104,6 @@ export default function page() {
                                 ))}
                               </SelectContent>
                               </Select>
-                        <FormControl>
-                      
-                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
