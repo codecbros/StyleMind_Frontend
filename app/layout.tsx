@@ -19,12 +19,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <body
           className={`${playfair_display.variable} ${roboto.variable} ${raleway.variable} antialiased scroll-smooth  bg-[#F0F5F9] dark:bg-background`}
         >
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
-          >
+          <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
             {showMainNav && (
               <>
                 <header className='container mx-auto flex items-center justify-between p-4'>

@@ -1,5 +1,5 @@
-import { clothingService } from '@/services/clothing.service'
-import { Category  } from '@/types'
+import { getCategories } from '@/services/clothing.service'
+import { Category } from '@/types'
 import { AxiosError } from 'axios'
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
@@ -17,7 +17,7 @@ export const useClothingStore = create<ClothingState>()(
 
         getCategories: async () => {
           try {
-            const {data} = await clothingService.getCategories()
+            const { data } = await getCategories()
             set({ categories: data })
             return
           } catch (error) {
@@ -26,8 +26,7 @@ export const useClothingStore = create<ClothingState>()(
             }
             throw error
           }
-        },
-
+        }
       }),
       {
         name: 'clothing-storage'
