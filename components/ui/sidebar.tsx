@@ -23,8 +23,10 @@ const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
 
 type SidebarContext = {
   state: 'expanded' | 'collapsed'
+  // eslint-disable-next-line no-unused-vars
   setOpen: (value: boolean | ((open: boolean) => boolean)) => void
   openMobile: boolean
+  // eslint-disable-next-line no-unused-vars
   setOpenMobile: (open: boolean) => void
   isMobile: boolean
   toggleSidebar: () => void
@@ -45,6 +47,7 @@ const SidebarProvider = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<'div'> & {
     defaultOpen?: boolean
+    // eslint-disable-next-line no-unused-vars
     onOpenChange?: (open: boolean) => void
   }
 >(
@@ -67,6 +70,7 @@ const SidebarProvider = React.forwardRef<
     const [_open, _setOpen] = React.useState(defaultOpen)
     const isOpen = _open
     const setOpen = React.useCallback(
+      // eslint-disable-next-line no-unused-vars
       (value: boolean | ((open: boolean) => boolean)) => {
         const nextState = typeof value === 'function' ? value(isOpen) : value;
 
@@ -85,7 +89,7 @@ const SidebarProvider = React.forwardRef<
 
     // Helper to toggle the sidebar.
     const toggleSidebar = React.useCallback(() => {
-      return isMobile ? setOpenMobile(open => !open) : setOpen(open => !open)
+      return isMobile ? setOpenMobile(_open => !_open) : setOpen(_open => !_open)
     }, [isMobile, setOpen, setOpenMobile])
 
     // Adds a keyboard shortcut to toggle the sidebar.
