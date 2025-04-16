@@ -52,7 +52,7 @@ export function AppSidebar() {
       deleteCookie('cookie-token')
       showSuccessToast('Cuenta Cerrada', 'Tu cuenta ha sido cerrada exitosamente.')
       router.push('/')
-    } catch (error) {
+    } catch {
       showErrorToast('Error al cerrar sesión')
     }
   }

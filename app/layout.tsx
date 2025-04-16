@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 import { playfair_display, raleway, roboto } from './fonts'
