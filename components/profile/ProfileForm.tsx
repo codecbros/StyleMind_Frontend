@@ -25,16 +25,17 @@ type authProps = {
   setIsEditing: Dispatch<SetStateAction<boolean>>
 }
 
+
 export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
   const { form, onSubmit, isLoading, handleDeleteAccount, profile } = useProfileForm({ setIsEditing, isEditing })
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+      <form onSubmit={form.handleSubmit(onSubmit as any)} className='space-y-6'>
         <FormLabel>Informacion Personal</FormLabel>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
           <FormField
-            control={form.control}
+            control={form.control as any}
             name='firstName'
             render={({ field }) => (
               <FormItem>
@@ -47,7 +48,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
             )}
           />
           <FormField
-            control={form.control}
+            control={form.control as any}
             name='lastName'
             render={({ field }) => (
               <FormItem>
@@ -62,7 +63,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
         </div>
 
         <FormField
-          control={form.control}
+          control={form.control as any}
           name='genderId'
           render={() => (
             <FormItem>
@@ -88,7 +89,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
             <AccordionTrigger>Información Personal (Opcional)</AccordionTrigger>
             <AccordionContent>
               <FormField
-                control={form.control}
+                control={form.control as any}
                 name='birthDate'
                 render={({ field }) => (
                   <FormItem className='mb-6'>
@@ -99,8 +100,8 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                         max={new Date().toISOString().split('T')[0]}
                         value={field.value ? field.value.split("T")[0] : ''}
                         onChange={e => {
-                          const date = new Date(e.target.value)                                
-                          field.onChange(date.toISOString())                          
+                          const date = new Date(e.target.value)
+                          field.onChange(date.toISOString())
                         }}
                       />
                     </FormControl>
@@ -112,7 +113,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
 
               <div className='grid grid-cols-2 gap-6'>
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name='weight'
                   render={({ field }) => (
                     <FormItem>
@@ -126,7 +127,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name='height'
                   render={({ field }) => (
                     <FormItem>
@@ -151,7 +152,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
             <AccordionContent className='space-y-6'>
               <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name='skinColor'
                   render={({ field }) => (
                     <FormItem>
@@ -165,7 +166,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={form.control as any}
                   name='hairColor'
                   render={({ field }) => (
                     <FormItem>
@@ -180,7 +181,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
                 />
               </div>
               <FormField
-                control={form.control}
+                control={form.control as any}
                 name='bodyDescription'
                 render={({ field }) => (
                   <FormItem>
@@ -198,7 +199,7 @@ export default function ProfileForm({ setIsEditing, isEditing }: authProps) {
         </Accordion>
 
         <FormField
-          control={form.control}
+          control={form.control as any}
           name='profileDescription'
           render={({ field }) => (
             <FormItem>
