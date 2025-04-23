@@ -78,24 +78,22 @@ const registerSchema = baseUserSchema.extend({
 
 const physicalTraitsSchema = z.object({
   skinColor: z.string().optional(),
-  weight: z
-    .union([z.string().transform(val => (val === '' ? undefined : Number(val))), z.number()])
-    .pipe(
-      z
-        .number()
-        .nonnegative({ message: 'El peso debe ser un número positivo.' })
-        .max(500, { message: 'Por favor, introduce un peso menor a 500 kg.' })
-    )
-    .optional(),
-  height: z
-    .union([z.string().transform(val => (val === '' ? undefined : Number(val))), z.number()])
-    .pipe(
-      z
-        .number()
-        .nonnegative({ message: 'La altura debe ser un número positivo.' })
-        .max(350, { message: 'Por favor, introduce una altura menor a 350 cm.' })
-    )
-    .optional(),
+  weight: z.preprocess(
+    (val) => {
+      if (val === '' || val === undefined || val === null) return undefined;
+      const num = Number(val);
+      return typeof num === 'number' && !isNaN(num) ? num : undefined;
+    },
+    z.number().int().positive().optional()
+  ) as z.ZodType<number | undefined, any, any>,
+  height: z.preprocess(
+    (val) => {
+      if (val === '' || val === undefined || val === null) return undefined;
+      const num = Number(val);
+      return typeof num === 'number' && !isNaN(num) ? num : undefined;
+    },
+    z.number().int().positive().optional()
+  ) as z.ZodType<number | undefined, any, any>,
   hairColor: z
     .string()
     .max(50, { message: 'El color de cabello debe tener un máximo de 20 caracteres.' })
