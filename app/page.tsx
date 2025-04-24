@@ -9,7 +9,8 @@ export default function Landing() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center bg-gradient-to-b from-primary/10 to-background">
-        <div className="container px-4 mx-auto text-center">
+        <div className="w-full h-full bg-gradient-to-b from-primary/10 to-background flex items-center justify-center">
+        <div className="text-center px-4">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             StyleMind
           </h1>
@@ -24,8 +25,10 @@ export default function Landing() {
               <Link href="/auth/login">Iniciar Sesión</Link>
             </Button>
           </div>
+          </div>
         </div>
       </section>
+      
 
       {/* Features Section */}
       <section className="py-20 bg-muted/50">
@@ -135,7 +138,40 @@ export default function Landing() {
                     </div>
                   </div>
                 </Card>
+                
               </div>
+                <Card className="p-6 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start gap-4">
+                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                      <UserIcon className="w-8 h-8 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-lg font-semibold">Cesar Carreño</h4>
+                      <p className="text-sm text-muted-foreground mb-2">Desarrollador Full Stack</p>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Apasionado por crear interfaces intuitivas y experiencias atractivas para los usuarios
+                      </p>
+                    <div className="flex gap-3">
+                    <a 
+                      href="https://github.com/cesar123-web"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <GithubIcon className="w-5 h-5" />
+                    </a>
+                    <a 
+                      href="https://www.linkedin.com/in/cesar-carre%C3%B1o-naranjo-5a7aa8328/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <LinkedinIcon className="w-5 h-5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </Card>
             </div>
 
             <div className="space-y-8">
