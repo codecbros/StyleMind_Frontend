@@ -1,5 +1,6 @@
 'use client'
 import ContainerLayout from '@/components/ContainerLayout'
+import ImageUploader from '@/components/ImageUpload'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -8,15 +9,17 @@ import { Textarea } from '@/components/ui/textarea'
 import { useCategories } from '@/hooks/useCategories'
 import { useToastHandler } from '@/hooks/useToastHandler'
 import { wardrobeItemSchema } from '@/schema/newClothingSchema'
-import { postClothing } from '@/services/clothing.service'
-import { ClothingItemResponse } from '@/types'
+import { postClothing, postImages } from '@/services/clothing.service'
+import { ClothingItemResponse, FilesType } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
 
 export default function page() {
   const { showSuccessToast, showErrorToast } = useToastHandler()
   const { categories } = useCategories()
+  const [files, setFiles] = useState<FilesType[]>([])
 
   const defaultValues = {
     name: '',
@@ -38,7 +41,21 @@ export default function page() {
   const onSubmit = async (data: ClothingItemResponse) => {
     try {
       const response = await postClothing(data)
+      console.log(response)
       showSuccessToast('¡Prenda Guardada!', response.message)
+      console.log(files)
+      // 2. Si se crearon bien y hay imágenes, subimos las imágenes
+      if (files.length > 0) {
+        const formData = new FormData()
+
+        files.forEach(file => {
+          formData.append('files', file)
+        })
+
+        const d = await postImages(response.data.id, formData)
+        console.log(d)
+      }
+
       form.reset()
     } catch (error) {
       showErrorToast(`Error al guardar la prenda
@@ -55,6 +72,7 @@ export default function page() {
           <h4 className='mb-3 text-lg font-semibold'>Cuanta más información proporciones, mejores serán las combinaciones</h4>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-8'>
+              <ImageUploader files={files} setFiles={setFiles} />
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
