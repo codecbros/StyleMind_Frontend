@@ -10,11 +10,20 @@ import { useToastHandler } from '@/hooks/useToastHandler'
 import { FilesType } from '@/types'
 
 type ImageUploaderProps = {
-  files: FilesType[]
-  setFiles: React.Dispatch<React.SetStateAction<FilesType[]>>
+  fileObjects: FilesType[]
+  setFileObjects: React.Dispatch<React.SetStateAction<FilesType[]>>
+  originalFiles: File[]
+  setOriginalFiles: React.Dispatch<React.SetStateAction<File[]>>
+  isImagesUploading?: boolean
 }
 
-export default function ImageUploader({ files, setFiles }: ImageUploaderProps) {
+export default function ImageUploader({
+  fileObjects: files,
+  setFileObjects: setFiles,
+  originalFiles,
+  setOriginalFiles,
+  isImagesUploading
+}: ImageUploaderProps) {
   const { showErrorToast, showPreventiveToast } = useToastHandler()
 
   useEffect(() => {
@@ -39,6 +48,7 @@ export default function ImageUploader({ files, setFiles }: ImageUploaderProps) {
               preview: URL.createObjectURL(file)
             }))
             setFiles(prev => [...prev, ...mappedFiles])
+            setOriginalFiles(prev => [...prev, ...allowedFiles])
           }
         } else {
           const mappedFiles: FilesType[] = acceptedFiles.map(file => ({
@@ -48,6 +58,7 @@ export default function ImageUploader({ files, setFiles }: ImageUploaderProps) {
             preview: URL.createObjectURL(file)
           }))
           setFiles(prev => [...prev, ...mappedFiles])
+          setOriginalFiles(prev => [...prev, ...acceptedFiles])
         }
       }
 
@@ -62,7 +73,7 @@ export default function ImageUploader({ files, setFiles }: ImageUploaderProps) {
         }
       }
     },
-    [files, showPreventiveToast, showErrorToast]
+    [files, showPreventiveToast, showErrorToast, setFiles, setOriginalFiles]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -73,6 +84,7 @@ export default function ImageUploader({ files, setFiles }: ImageUploaderProps) {
 
   const removeFile = (path: string) => {
     setFiles(prev => prev.filter(file => file.path !== path))
+    setOriginalFiles(prev => prev.filter(file => file.name !== path))
   }
 
   return (
@@ -99,7 +111,8 @@ export default function ImageUploader({ files, setFiles }: ImageUploaderProps) {
         </div>
       </div>
 
-      <Suspense fallback={<SkeletonGrid count={files.length} />}>
+      {isImagesUploading && <SkeletonGrid count={originalFiles.length} />}
+      {!isImagesUploading && (
         <ul className={files.length ? 'my-10 grid grid-cols-2 sm:gap-y-20 lg:grid-cols-4 gap-10' : 'hidden'}>
           {files.map(file => (
             <li key={file.preview} className='relative h-32 rounded-md shadow-lg hover:dark:bg-slate-100 hover:bg-slate-200'>
@@ -122,7 +135,7 @@ export default function ImageUploader({ files, setFiles }: ImageUploaderProps) {
             </li>
           ))}
         </ul>
-      </Suspense>
+      )}
     </section>
   )
 }
