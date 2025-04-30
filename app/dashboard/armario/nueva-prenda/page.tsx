@@ -18,7 +18,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
 
-export default function page() {
+export default function Page() {
   const { showSuccessToast, showErrorToast } = useToastHandler()
   const { categories } = useCategories()
   const [fileObjects, setFileObjects] = useState<FilesType[]>([]) // Para la UI con previews
