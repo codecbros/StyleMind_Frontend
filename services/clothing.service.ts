@@ -37,3 +37,21 @@ export async function postClothing(data: ClothingItem): Promise<ApiResponse<obje
     throw error
   }
 }
+
+export async function postImages(itemId: string, formData: FormData): Promise<ApiResponse<object>> {
+  try {
+    const { data }: AxiosResponse<ApiResponse<object>> = await axiosInstance.post(`/wardrobe/item-images/${itemId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${useAuthStore.getState().token}`
+      }
+    })
+
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Error al subir las imágenes.')
+    }
+    throw error
+  }
+}

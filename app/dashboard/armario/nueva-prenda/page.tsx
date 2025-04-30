@@ -1,5 +1,6 @@
 'use client'
 import ContainerLayout from '@/components/ContainerLayout'
+import ImageUploader from '@/components/ImageUpload'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -8,15 +9,21 @@ import { Textarea } from '@/components/ui/textarea'
 import { useCategories } from '@/hooks/useCategories'
 import { useToastHandler } from '@/hooks/useToastHandler'
 import { wardrobeItemSchema } from '@/schema/newClothingSchema'
-import { postClothing } from '@/services/clothing.service'
-import { ClothingItemResponse } from '@/types'
+import { postClothing, postImages } from '@/services/clothing.service'
+import { ClothingItemResponse, FilesType } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { LoaderCircle } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
 
 export default function Page() {
   const { showSuccessToast, showErrorToast } = useToastHandler()
   const { categories } = useCategories()
+  const [fileObjects, setFileObjects] = useState<FilesType[]>([]) // Para la UI con previews
+  const [originalFiles, setOriginalFiles] = useState<File[]>([]) // Para enviar al backend
+  const [isLoading, setIsLoading] = useState(false)
+  const [isImagesUploading, setIsImagesUploading] = useState(false)
 
   const defaultValues = {
     name: '',
@@ -36,9 +43,32 @@ export default function Page() {
   })
 
   const onSubmit = async (data: ClothingItemResponse) => {
+    setIsLoading(true)
     try {
       const response = await postClothing(data)
       showSuccessToast('¡Prenda Guardada!', response.message)
+      const { id }: any = response.data
+      setIsImagesUploading(true)
+
+      if (originalFiles.length > 0 && id) {
+        const formData = new FormData()
+
+        originalFiles.forEach(file => {
+          formData.append('files', file)
+        })
+
+        if (id) {
+          await postImages(id, formData)
+          showSuccessToast('¡Imágenes subidas!', 'Las imágenes se han subido correctamente.')
+          setIsImagesUploading(false)
+          setIsLoading(false)
+        } else {
+          showErrorToast('Error al subir las imágenes')
+        }
+      }
+
+      setFileObjects([])
+      setOriginalFiles([])
       form.reset()
     } catch (error) {
       showErrorToast(`Error al guardar la prenda
@@ -55,6 +85,13 @@ export default function Page() {
           <h4 className='mb-3 text-lg font-semibold'>Cuanta más información proporciones, mejores serán las combinaciones</h4>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-8'>
+              <ImageUploader
+                fileObjects={fileObjects}
+                originalFiles={originalFiles}
+                setFileObjects={setFileObjects}
+                setOriginalFiles={setOriginalFiles}
+                isImagesUploading={isImagesUploading}
+              />
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <FormField
                   control={form.control}
@@ -94,7 +131,6 @@ export default function Page() {
                           />
                         )}
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -199,9 +235,9 @@ export default function Page() {
                 )}
               />
 
-              <Button className='font-semibold w-full md:w-max order-1 md:order-3' type='submit'>
-                {' '}
-                Guardar Prenda{' '}
+              <Button className='font-semibold w-full md:w-max order-1 md:order-3' type='submit' disabled={isLoading || isImagesUploading}>
+                {(isLoading || isImagesUploading) && <LoaderCircle className='animate-spin w-4 h-4 mr-1' />}
+                {isLoading || isImagesUploading ? 'Guardando...' : 'Guardar'}
               </Button>
             </form>
           </Form>
