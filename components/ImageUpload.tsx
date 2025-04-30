@@ -1,6 +1,6 @@
 'use client'
-
-import { Suspense, useCallback, useEffect, useState } from 'react'
+import React from 'react'
+import { useCallback, useEffect} from 'react'
 import { X, UploadCloud } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { SkeletonGrid } from './skeletons/SkeletonGridImages'

@@ -4021,14 +4021,6 @@ snapshots:
       path-type: 4.0.0
       yaml: 1.10.2
 
-  cosmiconfig@7.1.0:
-    dependencies:
-      '@types/parse-json': 4.0.2
-      import-fresh: 3.3.1
-      parse-json: 5.2.0
-      path-type: 4.0.0
-      yaml: 1.10.2
-
   cross-spawn@7.0.6:
     dependencies:
       path-key: 3.1.1
@@ -5459,8 +5451,6 @@ snapshots:
     dependencies:
       client-only: 0.0.1
       react: 19.1.0
-
-  stylis@4.2.0: {}
 
   stylis@4.2.0: {}
 
