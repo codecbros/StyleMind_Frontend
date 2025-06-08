@@ -89,3 +89,24 @@ export type ClothingItem = {
   categoriesId: string[]
 }
 export type ClothingItemResponse = z.infer<typeof wardrobeItemSchema>
+
+export type WardrobeItem = {
+  id: string
+  name: string
+  description: string
+  season: string
+  primaryColor: string
+  images: {
+    id: string
+    url: string
+  }[]
+  categories: {
+    category: {
+      name: string
+    }
+  }[]
+}
+
+export type WardrobeResponse = {
+  data: WardrobeItem[]
+}
