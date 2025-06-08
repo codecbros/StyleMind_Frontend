@@ -1,8 +1,9 @@
 import { WardrobeItem } from "@/types"
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { Badge, Calendar, Pencil, Trash2 } from "lucide-react";
+import { Card, CardContent,  CardHeader } from "../ui/card";
+import { Calendar, Pencil, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
+import { Badge } from "../ui/badge";
 
 type ClothingCardProps = {
   item: WardrobeItem
@@ -18,8 +19,10 @@ const seasonStyles: Record<string, { color: string; bgColor: string }> = {
 export const ClothingCard = ({item}: ClothingCardProps) => {
 
   const seasonStyle = seasonStyles[item.season] || { color: "text-gray-700", bgColor: "bg-gray-100" }
+
+  console.log(item.images[0].url)
   return (
-    <Card className="w-full max-w-sm mx-auto overflow-hidden group hover:shadow-lg transition-shadow duration-300">
+    <Card className="w-full max-w-sm mx-auto overflow-hidden group hover:shadow-lg transition-shadow duration-300 p-0">
       <CardHeader className="p-0 relative">
         {/* Carrusel de imágenes */}
         <Carousel className="w-full">
@@ -28,7 +31,7 @@ export const ClothingCard = ({item}: ClothingCardProps) => {
               <CarouselItem key={image.id}>
                 <div className="relative aspect-[3/4] overflow-hidden">
                   <img
-                    src={image.url || "/placeholder.svg"}
+                    src={image.url}
                     alt={`${item.name}`}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
@@ -36,13 +39,17 @@ export const ClothingCard = ({item}: ClothingCardProps) => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-          <CarouselNext className="right-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+          {item.images.length > 1 && (
+            <>
+              <CarouselPrevious className="left-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <CarouselNext className="right-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </>
+          )}
         </Carousel>
 
         {/* Badge de temporada */}
         <div className="absolute top-3 left-3">
-          <Badge  className={`${seasonStyle.bgColor} ${seasonStyle.color} border-0`}>
+          <Badge variant="outline"  className={`${seasonStyle.bgColor} ${seasonStyle.color} border-0`}>
             <Calendar className="h-3 w-3 mr-1" />
             {item.season}
           </Badge>
@@ -50,10 +57,10 @@ export const ClothingCard = ({item}: ClothingCardProps) => {
 
         {/* Botones superiores */}
         <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Button   className="h-8 w-8 rounded-full bg-white/80 hover:bg-white">
+          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/80 hover:bg-white">
             <Pencil className="h-4 w-4 text-gray-600" />
           </Button>
-          <Button   className="h-8 w-8 rounded-full bg-white/80 hover:bg-white">
+          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full bg-white/80 hover:bg-white">
             <Trash2 className="h-4 w-4 text-red-500" />
           </Button>
         </div>
@@ -71,8 +78,8 @@ export const ClothingCard = ({item}: ClothingCardProps) => {
 
         {/* Categorías */}
         <div className="flex flex-wrap gap-1">
-          {item.categories.map((cat, index) => (
-            <Badge key={index} className="text-xs">
+          {item.categories.map( cat => (
+            <Badge  key={cat.category.name} variant="secondary">
               {cat.category.name}
             </Badge>
           ))}
