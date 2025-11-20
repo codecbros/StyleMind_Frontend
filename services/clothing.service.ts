@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { axiosInstance } from './config'
-import { ApiResponse, CategoriesApiResponse, ClothingItem } from '@/types'
+import { ApiResponse, CategoriesApiResponse, ClothingItem, WardrobeItemsResponse } from '@/types'
 import { useAuthStore } from '@/store/auth.store'
 
 // Obtener Categorías
@@ -16,6 +16,24 @@ export async function getCategories(): Promise<CategoriesApiResponse> {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.message || 'Error al obtener las categorías.')
+    }
+    throw error
+  }
+}
+
+// Obtener items del guardarropa
+export async function getWardrobeItems(): Promise<WardrobeItemsResponse> {
+  try {
+    const { data }: AxiosResponse<WardrobeItemsResponse> = await axiosInstance.get('/wardrobe', {
+      headers: {
+        Authorization: `Bearer ${useAuthStore.getState().token}`
+      }
+    })
+
+    return data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Error al obtener los items del guardarropa.')
     }
     throw error
   }

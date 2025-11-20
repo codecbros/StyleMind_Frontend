@@ -89,3 +89,22 @@ export type ClothingItem = {
   categoriesId: string[]
 }
 export type ClothingItemResponse = z.infer<typeof wardrobeItemSchema>
+
+// Wardrobe item from GET endpoint
+export type WardrobeItem = {
+  id: string
+  name: string
+  description: string
+  season: string
+  primaryColor: string
+  secondaryColor?: string | null
+  style: string
+  material?: string | null
+  size: string
+  categories: Category[]
+  images?: string[]
+  createdAt?: string
+  updatedAt?: string
+}
+
+export type WardrobeItemsResponse = ApiResponse<WardrobeItem[]>
